@@ -17,5 +17,23 @@ main = hspec $
         it "2 -> II" $
             toRoman 2 `shouldBe` "II"
 
+        it "4 -> IV" $
+            toRoman 4 `shouldBe` "IV"
+
         it "6 -> VI" $
             toRoman 6 `shouldBe` "VI"
+
+        it "14 -> XIV" $
+            toRoman 14 `shouldBe` "XIV"
+
+        it "should convert arabic to roman" $
+            filter (== False) (map (\(a, r) -> toRoman a == r) solutions) `shouldBe` []
+
+
+solutions =
+    [ (1, "I")
+    , (2, "II")
+    , (4, "IV")
+    , (5, "V")
+    , (1945, "MCMXLV")
+    ]
