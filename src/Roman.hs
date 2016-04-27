@@ -2,30 +2,27 @@ module Roman
     ( toRoman
     ) where
 
-data Roman = I | V | X | L | C | D | M
-    deriving (Show, Eq, Ord)
+toRoman a
+    | a >= 1000 =
+        "M" ++ toRoman (a - 1000)
 
+    | a >= 500 =
+        "D" ++ toRoman (a - 500)
 
-romanToChar :: Roman -> Char
+    | a >= 100 =
+        "C" ++ toRoman (a - 100)
 
-romanToChar I =
-    'I'
-romanToChar V =
-    'V'
-romanToChar X =
-    'X'
-romanToChar L =
-    'L'
-romanToChar C =
-    'C'
-romanToChar D =
-    'D'
-romanToChar M =
-    'M'
+    | a >= 50 =
+        "L" ++ toRoman (a - 50)
 
-toRoman :: Int -> String
+    | a >= 10 =
+        "X" ++ toRoman (a - 10)
 
-toRoman 0 =
-    ""
-toRoman arabic =
-    replicate arabic (romanToChar I)
+    | a >= 5 =
+        "V" ++ toRoman (a - 5)
+
+    | a >= 1 =
+        "I" ++ toRoman (a - 1)
+
+    | a == 0 =
+        ""

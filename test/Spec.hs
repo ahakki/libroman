@@ -6,13 +6,16 @@ import           Test.QuickCheck
 
 
 main :: IO ()
-main = hspec $ do
+main = hspec $
     describe "Roman.toRoman" $ do
-        it "returns empty String for arabic zero" $
+        it "0 -> \"\"" $
             toRoman 0 `shouldBe` ""
 
-        it "returns I for arabic 1" $
+        it "1 -> I" $
             toRoman 1 `shouldBe` "I"
 
-        it "returns II for arabic 2" $
+        it "2 -> II" $
             toRoman 2 `shouldBe` "II"
+
+        it "6 -> VI" $
+            toRoman 6 `shouldBe` "VI"
