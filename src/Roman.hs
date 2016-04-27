@@ -4,7 +4,7 @@ module Roman
 
 
 
-
+toRoman :: Integral a => a -> String
 
 toRoman a
     | a >= 1000 =
@@ -47,6 +47,8 @@ toRoman a
 
     | a == 0 =
         ""
+    | a < 0 =
+        toRoman (negate a)
 
     | otherwise =
-        undefined
+        error "why?"

@@ -1,7 +1,6 @@
 import           Control.Exception
 import           Roman
 import           Test.Hspec
-import           Test.QuickCheck
 
 
 
@@ -26,14 +25,14 @@ main = hspec $
         it "14 -> XIV" $
             toRoman 14 `shouldBe` "XIV"
 
-        it "should convert arabic to roman" $
-            filter (== False) (map (\(a, r) -> toRoman a == r) solutions) `shouldBe` []
+        it "1929" $
+            toRoman 1929 `shouldBe` "MCMXXIX"
 
+        it "4999" $
+            toRoman 4999 `shouldBe` "MMMMCMXCIX"
 
-solutions =
-    [ (1, "I")
-    , (2, "II")
-    , (4, "IV")
-    , (5, "V")
-    , (1945, "MCMXLV")
-    ]
+        it "42" $
+            toRoman 42 `shouldBe` "XLII"
+
+        it "96" $
+            toRoman 96 `shouldBe` "XCVI"
