@@ -1,5 +1,5 @@
 import           Control.Exception
-import           Roman
+import           Roman.Convert
 import           Test.Hspec
 
 

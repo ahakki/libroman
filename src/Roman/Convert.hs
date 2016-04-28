@@ -1,4 +1,19 @@
-module Roman
+{- |
+Module      :  $Header$
+Description :  Converts arabic numerals to roman numerals
+Copyright   :  (c) Alexander Hakki
+License     :  MIT
+
+Maintainer  :  ahk@ahakki.xyz
+Stability   :  experimental
+Portability :  portable
+
+TODO: Add Description
+-}
+
+
+
+module Roman.Convert
     ( toRoman
     ) where
 
