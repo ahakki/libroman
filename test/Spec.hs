@@ -1,12 +1,14 @@
 import           Control.Exception
-import           Roman.Convert
+import           Roman.Decode
+import           Roman.Encode
 import           Test.Hspec
+import           Test.QuickCheck
 
 
 
 main :: IO ()
-main = hspec $
-    describe "Roman.toRoman" $ do
+main = hspec $ do
+    describe "Roman.Encode" $ do
         it "0 -> \"\"" $
             toRoman 0 `shouldBe` ""
 
@@ -25,14 +27,24 @@ main = hspec $
         it "14 -> XIV" $
             toRoman 14 `shouldBe` "XIV"
 
-        it "1929" $
+        it "1929 -> MCMXXIX" $
             toRoman 1929 `shouldBe` "MCMXXIX"
 
-        it "4999" $
+        it "4999 -> MMMMCMXCIX" $
             toRoman 4999 `shouldBe` "MMMMCMXCIX"
 
-        it "42" $
+        it "42 -> XLII" $
             toRoman 42 `shouldBe` "XLII"
 
-        it "96" $
+        it "96 -> XCVI" $
             toRoman 96 `shouldBe` "XCVI"
+
+    describe "Roman.Decode" $ do
+        it "I -> 1" $
+            fromRoman "I" `shouldBe` 1
+
+        it "II -> 2" $
+            fromRoman "II" `shouldBe` 2
+
+        it "converts romans to arabs" $ property $
+            \x -> fromRoman (toRoman x) == (x :: Word)
