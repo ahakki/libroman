@@ -1,6 +1,6 @@
 name:                RNaaS
 version:             0.0.1
-synopsis:            Initial project template from stack
+synopsis:            arabic to roman numeral conversions
 description:         Please see README
 homepage:            rnaas.ahakki.xyz
 license:             BSD3
