@@ -2,7 +2,7 @@
 Module      :  $Header$
 Description :  Converts arabic numerals to roman numerals
 Copyright   :  (c) Alexander Hakki
-License     :  MIT
+License     :  BSD3
 
 Maintainer  :  ahk@ahakki.xyz
 Stability   :  experimental

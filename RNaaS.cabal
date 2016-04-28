@@ -1,8 +1,8 @@
 name:                RNaaS
 version:             0.0.1
 synopsis:            Initial project template from stack
-description:         Please see README.md
-homepage:            https://github.com/githubuser/toRoman#readme
+description:         Please see README
+homepage:            rnaas.ahakki.xyz
 license:             BSD3
 license-file:        LICENSE
 author:              Author name here
