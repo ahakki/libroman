@@ -7,13 +7,11 @@ License     :  BSD3
 Maintainer  :  ahk@ahakki.xyz
 Stability   :  experimental
 Portability :  portable
-
-TODO: Add Description
 -}
 
 
 
-module Roman.Convert
+module Roman.Encode
     ( toRoman
     ) where
 
