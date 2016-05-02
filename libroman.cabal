@@ -2,13 +2,13 @@ name:                libroman
 version:             1.0.0
 synopsis:            arabic to roman numeral conversions
 description:         Please see README
-homepage:            rnaas.ahakki.xyz
+homepage:            https://ahakki.xyz
 license:             BSD3
 license-file:        LICENSE
-author:              Author name here
-maintainer:          example@example.com
-copyright:           2016 Author name here
-category:            Web
+author:              Alexander Hakki
+maintainer:          ahakki@ahakki.xyz
+copyright:           2016 Alexander Hakki
+category:            romans
 build-type:          Simple
 -- extra-source-files:
 cabal-version:       >=1.10
