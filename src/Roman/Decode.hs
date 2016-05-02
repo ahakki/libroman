@@ -19,8 +19,12 @@ import           Data.Char
 
 fromRoman :: Integral a => String -> a
 
-fromRoman a =
-    fromRoman' $ map toUpper a
+fromRoman a
+    | checkRoman a =
+        fromRoman' $ map toUpper a
+
+    | otherwise =
+        error "not a roman numeral"
   where
     fromRoman' (x:y:ys)
         | fromRoman'' x < fromRoman'' y =
@@ -59,3 +63,11 @@ fromRoman a =
 
     fromRoman'' _ =
         0
+
+
+checkRoman :: String -> Bool
+checkRoman (x:xs) =
+   toUpper x `elem` ['I', 'V', 'X', 'L', 'C', 'D', 'M'] && checkRoman xs
+
+checkRoman _ =
+    True
