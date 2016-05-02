@@ -15,47 +15,49 @@ module Roman.Decode
     ( fromRoman
     ) where
 
+import           Data.Char
 
 fromRoman :: Integral a => String -> a
 
+fromRoman a =
+    fromRoman' $ map toUpper a
+  where
+    fromRoman' (x:y:ys)
+        | fromRoman'' x < fromRoman'' y =
+            fromRoman'' y - fromRoman'' x + fromRoman' ys
+        | otherwise =
+            fromRoman'' x + fromRoman' (y:ys)
 
+    fromRoman' (x:xs) =
+        fromRoman'' x + fromRoman' xs
 
-fromRoman (x:y:ys)
-    | fromRoman' x < fromRoman' y =
-        fromRoman' y - fromRoman' x + fromRoman ys
-    | otherwise =
-        fromRoman' x + fromRoman (y:ys)
-
-fromRoman (x:xs) =
-    fromRoman' x + fromRoman xs
-
-fromRoman _ =
-    0
+    fromRoman' _ =
+        0
 
 
 
 -- single Roman nums
 
-fromRoman' 'I' =
+fromRoman'' 'I' =
     1
 
-fromRoman' 'V' =
+fromRoman'' 'V' =
     5
 
-fromRoman' 'X' =
+fromRoman'' 'X' =
     10
 
-fromRoman' 'L' =
+fromRoman'' 'L' =
     50
 
-fromRoman' 'C' =
+fromRoman'' 'C' =
     100
 
-fromRoman' 'D' =
+fromRoman'' 'D' =
     500
 
-fromRoman' 'M' =
+fromRoman'' 'M' =
     1000
 
-fromRoman' _ =
+fromRoman'' _ =
     0
