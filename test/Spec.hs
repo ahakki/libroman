@@ -39,12 +39,6 @@ main = hspec $ do
         it "96 -> XCVI" $
             toRoman 96 `shouldBe` "XCVI"
 
-    describe "Roman.Decode" $ do
-        it "I -> 1" $
-            fromRoman "I" `shouldBe` 1
-
-        it "II -> 2" $
-            fromRoman "II" `shouldBe` 2
-
+    describe "Roman.Decode" $
         it "converts romans to arabs" $ property $
             \x -> fromRoman (toRoman x) == (x :: Word)
