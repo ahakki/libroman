@@ -16,7 +16,7 @@ module Roman.Decode
     ) where
 
 
-fromRoman :: Integral a => [Char] -> a
+fromRoman :: Integral a => String -> a
 
 fromRoman [] =
     0

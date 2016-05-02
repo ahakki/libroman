@@ -49,6 +49,7 @@ toRoman a
 
     | a >= 9 =
         "IX" ++ toRoman (a - 9)
+
     | a >= 5 =
         "V" ++ toRoman (a - 5)
 
@@ -60,6 +61,7 @@ toRoman a
 
     | a == 0 =
         ""
+
     | a < 0 =
         toRoman (negate a)
 
