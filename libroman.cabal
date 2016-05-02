@@ -33,4 +33,4 @@ test-suite RNaaS-test
 
 source-repository head
   type:     git
-  location: https://bitbucket.com/ahakki/rnaas.git
+  location: https://bitbucket.com/ahakki/libroman.git
