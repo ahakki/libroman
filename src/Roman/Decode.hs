@@ -35,29 +35,27 @@ fromRoman a =
         0
 
 
+    fromRoman'' :: Integral a => Char -> a
+    fromRoman'' 'I' =
+        1
 
--- single Roman nums
+    fromRoman'' 'V' =
+        5
 
-fromRoman'' 'I' =
-    1
+    fromRoman'' 'X' =
+        10
 
-fromRoman'' 'V' =
-    5
+    fromRoman'' 'L' =
+        50
 
-fromRoman'' 'X' =
-    10
+    fromRoman'' 'C' =
+        100
 
-fromRoman'' 'L' =
-    50
+    fromRoman'' 'D' =
+        500
 
-fromRoman'' 'C' =
-    100
+    fromRoman'' 'M' =
+        1000
 
-fromRoman'' 'D' =
-    500
-
-fromRoman'' 'M' =
-    1000
-
-fromRoman'' _ =
-    0
+    fromRoman'' _ =
+        0
