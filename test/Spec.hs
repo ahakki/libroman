@@ -1,4 +1,5 @@
 import           Control.Exception
+import           Data.Word8
 import           Roman.Decode
 import           Roman.Encode
 import           Test.Hspec
@@ -39,6 +40,15 @@ main = hspec $ do
         it "96 -> XCVI" $
             toRoman 96 `shouldBe` "XCVI"
 
-    describe "Roman.Decode" $
+    describe "Roman.Decode" $ do
+        it "I -> 1" $
+            fromRoman "I" `shouldBe` 1
+
+        it "II -> 2" $
+            fromRoman "II" `shouldBe` 2
+
+        it "IV -> 4" $
+            fromRoman "IV" `shouldBe` 4
+
         it "converts romans to arabs" $ property $
-            \x -> fromRoman (toRoman x) == (x :: Word)
+            \x -> fromRoman (toRoman x) == (x :: Word8)
