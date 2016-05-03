@@ -15,7 +15,9 @@ module Roman.Encode
     ( toRoman
     ) where
 
-
+-- | takes a Integral and converts it to a roman number.
+--
+--   negative numbers are returned as positive
 
 toRoman :: Integral a => a -> String
 
