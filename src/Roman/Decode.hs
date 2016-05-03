@@ -26,6 +26,7 @@ fromRoman a
     | otherwise =
         error "not a roman numeral"
   where
+    fromRoman' :: Integral a => String -> a
     fromRoman' (x:y:ys)
         | fromRoman'' x < fromRoman'' y =
             fromRoman'' y - fromRoman'' x + fromRoman' ys
