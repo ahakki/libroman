@@ -26,7 +26,6 @@ test-suite libroman-test
   main-is:             Spec.hs
   build-depends:       base
                      , hspec
-                     , word8
                      , QuickCheck
                      , libroman
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N

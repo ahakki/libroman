@@ -1,5 +1,5 @@
 import           Control.Exception
-import           Data.Word8
+import           Data.Word
 import           Roman.Decode
 import           Roman.Encode
 import           Test.Hspec
@@ -42,4 +42,4 @@ main = hspec $ do
 
     describe "Roman.Decode" $
         it "converts romans to arabs" $ property $
-            \x -> fromRoman (toRoman x) == (x :: Word8)
+            \x -> fromRoman (toRoman x) == (x :: Word16)
