@@ -21,7 +21,7 @@ import           Data.Char
 
 -- | takes a roman number and converts it to an arabic number.
 --
---   throws an exception if argument contains anything other than i, v, x, l, c, d, m
+--   throws exception if argument contains anything other than i, v, x, l, c, d, m
 --
 --   is case insensitive
 
