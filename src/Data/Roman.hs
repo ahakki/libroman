@@ -13,9 +13,7 @@ Portability :  portable
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 
-module Data.Roman 
-    (        
-    ) where
+module Data.Roman where
      
 
 
@@ -31,7 +29,8 @@ class Roman r where
    
 
 data RomanSymbol
-    = I
+    = Nulla
+    | I
     | V
     | X
     | L
@@ -46,7 +45,9 @@ data RomanSymbol
         , Enum
         )
         
-instance Roman RomanSymbol where 
+instance Roman RomanSymbol where
+    fromRoman Nulla =
+        0 
     fromRoman I =
         1
     fromRoman V =
@@ -54,7 +55,7 @@ instance Roman RomanSymbol where
     fromRoman X =
         10
     fromRoman L =
-        60
+        50
     fromRoman C =
         100
     fromRoman D =
@@ -77,9 +78,24 @@ instance Num RomanSymbol where
     abs = id                    -- | Roman Symbols are always positive
     signum a = 1                -- | Roman Symbols are always positive
 
-    fromInteger =
-        read . R.toRoman
-        
+    fromInteger 0 =
+        Nulla
+    fromInteger 1 =
+        I
+    fromInteger 5 =
+        V
+    fromInteger 10 =
+        X
+    fromInteger 50 =
+        L
+    fromInteger 100 =
+        X
+    fromInteger 500 =
+        D
+    fromInteger 1000 =
+        M
+    fromInteger _ =
+        error "this number can't be converted into a roman symbol"
         
 type RomanList =
     [RomanSymbol]
@@ -98,14 +114,14 @@ instance Roman RomanList where
         0
         
 instance Num RomanList where
-    (+) a b = 
-        read . show $ (fromRoman a) + (fromRoman b)
-    
+    (+) a b =
+        fromInteger $ (fromRoman a) + (fromRoman b)
+        
     (-) a b =
-        undefined
+        fromInteger $ (fromRoman a) - (fromRoman b)
     
     (*) a b = 
-        undefined
+        fromInteger $ (fromRoman a) * (fromRoman b)
         
     negate = id                 -- | Roman Symbols are always positive
     abs = id                    -- | Roman Symbols are always positive
