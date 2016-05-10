@@ -94,8 +94,11 @@ instance Num RomanSymbol where
         D
     fromInteger 1000 =
         M
-    fromInteger _ =
-        error "this number can't be converted into a roman symbol"
+    fromInteger a 
+        | a < 0 = 
+            fromInteger $ negate a
+        | otherwise = 
+            error "Data.Roman: Won't work"
         
 type RomanList =
     [RomanSymbol]
@@ -127,5 +130,51 @@ instance Num RomanList where
     abs = id                    -- | Roman Symbols are always positive
     signum a = 1                -- | Roman Symbols are always positive
 
-    fromInteger =
-        read . R.toRoman
+    fromInteger a
+        | a >= 1000 =
+            [M] ++ fromInteger (a - 1000)
+
+        | a >= 900 =
+            [C , M] ++ fromInteger (a - 900)
+
+        | a >= 500 =
+            [D] ++ fromInteger (a - 500)
+
+        | a >= 400 =
+            [C , D] ++ fromInteger (a - 400)
+
+        | a >= 100 =
+            [C] ++ fromInteger (a - 100)
+
+        | a >= 90 =
+            [X , C] ++ fromInteger (a - 90)
+
+        | a >= 50 =
+            [L] ++ fromInteger (a - 50)
+
+        | a >= 40 =
+            [X , L] ++ fromInteger (a - 40)
+
+        | a >= 10 =
+            [X] ++ fromInteger (a - 10)
+
+        | a >= 9 =
+            [I , X] ++ fromInteger (a - 9)
+
+        | a >= 5 =
+            [V] ++ fromInteger (a - 5)
+
+        | a == 4 =
+            [I , V]
+
+        | a >= 1 =
+            [I] ++ fromInteger (a - 1)
+
+        | a == 0 =
+            []
+
+        | a < 0 =
+            fromInteger (negate a)
+
+        | otherwise =
+            error "why?"
