@@ -1,11 +1,4 @@
 -- Roman.hs
-
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE TypeSynonymInstances #-}
-{-# LANGUAGE InstanceSigs #-}
-{-# LANGUAGE DatatypeContexts #-}
-{-# LANGUAGE RankNTypes #-}
-
 {- |
 Module      :  $Header$
 Description :  Integral Datatype for Roman Numerals
@@ -16,6 +9,9 @@ Maintainer  :  ahk@ahakki.xyz
 Stability   :  experimental
 Portability :  portable
 -}
+
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE TypeSynonymInstances #-}
 
 module Data.Roman 
     (        
@@ -31,7 +27,7 @@ import qualified Roman.Decode as R
 
 
 class Roman r where
-    fromRoman ::Integral b =>  r -> b
+    fromRoman :: Integral b =>  r -> b
    
 
 data RomanSymbol
@@ -50,7 +46,6 @@ data RomanSymbol
         , Enum
         )
         
-                
 instance Roman RomanSymbol where 
     fromRoman I =
         1
@@ -70,13 +65,13 @@ instance Roman RomanSymbol where
     
 instance Num RomanSymbol where
     (+) a b =
-        read . show $ (fromRoman a) + (fromRoman b)
+        fromInteger $ (fromRoman a) + (fromRoman b)
         
     (-) a b =
-        undefined
+        fromInteger $ (fromRoman a) - (fromRoman b)
     
     (*) a b = 
-        undefined
+        fromInteger $ (fromRoman a) * (fromRoman b)
         
     negate = id                 -- | Roman Symbols are always positive
     abs = id                    -- | Roman Symbols are always positive
@@ -101,3 +96,20 @@ instance Roman RomanList where
 
     fromRoman _ = 
         0
+        
+instance Num RomanList where
+    (+) a b = 
+        read . show $ (fromRoman a) + (fromRoman b)
+    
+    (-) a b =
+        undefined
+    
+    (*) a b = 
+        undefined
+        
+    negate = id                 -- | Roman Symbols are always positive
+    abs = id                    -- | Roman Symbols are always positive
+    signum a = 1                -- | Roman Symbols are always positive
+
+    fromInteger =
+        read . R.toRoman
