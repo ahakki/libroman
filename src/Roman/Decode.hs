@@ -1,3 +1,4 @@
+--Decode.hs
 {- |
 Module      :  $Header$
 Description :  Converts roman to arabic numerals
@@ -8,8 +9,6 @@ Maintainer  :  ahk@ahakki.xyz
 Stability   :  experimental
 Portability :  portable
 -}
-
-
 
 module Roman.Decode
     ( fromRoman
@@ -34,50 +33,58 @@ fromRoman a
 
     | otherwise =
         error "not a roman numeral"
-  where
-    fromRoman' :: Integral a => String -> a
-    fromRoman' (x:y:ys)
-        | fromRoman'' x < fromRoman'' y =
-            fromRoman'' y - fromRoman'' x + fromRoman' ys
-        | otherwise =
-            fromRoman'' x + fromRoman' (y:ys)
+        
+fromRoman' :: Integral a => String -> a
+fromRoman' (x:y:ys)
+    | fromRoman'' x < fromRoman'' y =
+        fromRoman'' y - fromRoman'' x + fromRoman' ys
+    | otherwise =
+        fromRoman'' x + fromRoman' (y:ys)
 
-    fromRoman' (x:xs) =
-        fromRoman'' x + fromRoman' xs
+fromRoman' (x:xs) =
+    fromRoman'' x + fromRoman' xs
 
-    fromRoman' _ =
-        0
+fromRoman' _ =
+    0
 
 
-    fromRoman'' :: Integral a => Char -> a
-    fromRoman'' 'I' =
-        1
+fromRoman'' :: Integral a => Char -> a
+fromRoman'' 'I' =
+    1
 
-    fromRoman'' 'V' =
-        5
+fromRoman'' 'V' =
+    5
 
-    fromRoman'' 'X' =
-        10
+fromRoman'' 'X' =
+    10
 
-    fromRoman'' 'L' =
-        50
+fromRoman'' 'L' =
+    50
 
-    fromRoman'' 'C' =
-        100
+fromRoman'' 'C' =
+    100
 
-    fromRoman'' 'D' =
-        500
+fromRoman'' 'D' =
+    500
 
-    fromRoman'' 'M' =
-        1000
+fromRoman'' 'M' =
+    1000
 
-    fromRoman'' _ =
-        0
+fromRoman'' _ =
+    0
 
 
 checkRoman :: String -> Bool
 checkRoman (x:xs) =
    toUpper x `elem` ['I', 'V', 'X', 'L', 'C', 'D', 'M'] && checkRoman xs
 
-checkRoman _ =
+checkRoman [] =
     True
+
+fromRomanS :: Integral a => String -> Either String a
+fromRomanS a
+    | checkRoman a =
+        Right $  fromRoman' (map toUpper a)
+
+    | otherwise =
+        Left "Not a Roman Numeral"
