@@ -90,5 +90,14 @@ type RomanNumeral =
     [RomanSymbol]
     
 instance Roman RomanNumeral where
-    fromRoman a =
-        R.fromRoman $  show =<< a 
+    fromRoman (x:y:ys)
+        | fromRoman x < fromRoman y =
+            fromRoman y - fromRoman x + fromRoman ys
+        | otherwise =
+            fromRoman x + fromRoman (y:ys)
+
+    fromRoman (x:xs) =
+        fromRoman x + fromRoman xs
+
+    fromRoman _ = 
+        0
