@@ -14,15 +14,6 @@ Portability :  portable
 {-# LANGUAGE TypeSynonymInstances #-}
 
 module Data.Roman where
-     
-
-
-
-import qualified Roman.Encode as R
-import qualified Roman.Decode as R
-
-
-
 
 class Roman r where
     fromRoman :: Integral b =>  r -> b
@@ -177,4 +168,4 @@ instance Num RomanList where
             fromInteger (negate a)
 
         | otherwise =
-            error "why?"
+            error "Data.Roman why?"
