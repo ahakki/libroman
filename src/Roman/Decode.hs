@@ -84,7 +84,7 @@ checkRoman [] =
 fromRomanS :: Integral a => String -> Either String a
 fromRomanS a
     | checkRoman a =
-        Right $  fromRoman' (map toUpper a)
+        Right $  fromRoman' (fmap toUpper a)
 
     | otherwise =
         Left "Not a Roman Numeral"
