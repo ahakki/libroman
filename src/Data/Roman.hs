@@ -86,10 +86,10 @@ instance Num RomanSymbol where
         read . R.toRoman
         
         
-type RomanNumeral =
+type RomanList =
     [RomanSymbol]
     
-instance Roman RomanNumeral where
+instance Roman RomanList where
     fromRoman (x:y:ys)
         | fromRoman x < fromRoman y =
             fromRoman y - fromRoman x + fromRoman ys
