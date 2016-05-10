@@ -1,4 +1,4 @@
--- Roman-hs
+-- Roman.hs
 
 {- |
 Module      :  $Header$
