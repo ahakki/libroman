@@ -1,5 +1,11 @@
 -- Roman.hs
 
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE InstanceSigs #-}
+{-# LANGUAGE DatatypeContexts #-}
+{-# LANGUAGE RankNTypes #-}
+
 {- |
 Module      :  $Header$
 Description :  Integral Datatype for Roman Numerals
@@ -15,8 +21,19 @@ module Data.Roman
     (        
     ) where
      
-import Roman.Encode
-        
+
+
+
+import qualified Roman.Encode as R
+import qualified Roman.Decode as R
+
+
+
+
+class Roman r where
+    fromRoman ::Integral b =>  r -> b
+   
+
 data RomanSymbol
     = I
     | V
@@ -32,39 +49,46 @@ data RomanSymbol
         , Show
         , Enum
         )
-             
-type RomanNumeral =
-    [RomanSymbol]
-
+        
+                
+instance Roman RomanSymbol where 
+    fromRoman I =
+        1
+    fromRoman V =
+        5
+    fromRoman X =
+        10
+    fromRoman L =
+        60
+    fromRoman C =
+        100
+    fromRoman D =
+        500
+    fromRoman M =
+        1000
+        
+    
 instance Num RomanSymbol where
-    (+) a b = 
-        read . toRoman $ toInteger a + toInteger b
-
-instance Real RomanSymbol where
-    toRational _ = 
+    (+) a b =
+        read . show $ (fromRoman a) + (fromRoman b)
+        
+    (-) a b =
         undefined
     
-instance Integral RomanSymbol where
-    toInteger I =
-        1 
+    (*) a b = 
+        undefined
+        
+    negate = id                 -- | Roman Symbols are always positive
+    abs = id                    -- | Roman Symbols are always positive
+    signum a = 1                -- | Roman Symbols are always positive
 
-    toInteger V =
-        5
-
-    toInteger X =
-        10
-
-    toInteger L =
-        50
-
-    toInteger C =
-        100
-
-    toInteger D =
-        500
-
-    toInteger M =
-        1000
-
-    toInteger _ =
-        0
+    fromInteger =
+        read . R.toRoman
+        
+        
+type RomanNumeral =
+    [RomanSymbol]
+    
+instance Roman RomanNumeral where
+    fromRoman a =
+        R.fromRoman $  show =<< a 
