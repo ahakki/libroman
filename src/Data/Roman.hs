@@ -10,14 +10,14 @@ Stability   :  experimental
 Portability :  portable
 -}
 
-{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE FlexibleInstances    #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 
 module Data.Roman where
 
 class Roman r where
     fromRoman :: Integral b =>  r -> b
-   
+
 
 data RomanSymbol
     = Nulla
@@ -28,17 +28,17 @@ data RomanSymbol
     | C
     | D
     | M
-    deriving 
+    deriving
         ( Eq
         , Ord
         , Read
         , Show
         , Enum
         )
-        
+
 instance Roman RomanSymbol where
     fromRoman Nulla =
-        0 
+        0
     fromRoman I =
         1
     fromRoman V =
@@ -53,18 +53,18 @@ instance Roman RomanSymbol where
         500
     fromRoman M =
         1000
-        
-    
+
+
 instance Num RomanSymbol where
     (+) a b =
         fromInteger $ (fromRoman a) + (fromRoman b)
-        
+
     (-) a b =
         fromInteger $ (fromRoman a) - (fromRoman b)
-    
-    (*) a b = 
+
+    (*) a b =
         fromInteger $ (fromRoman a) * (fromRoman b)
-        
+
     negate = id                 -- | Roman Symbols are always positive
     abs = id                    -- | Roman Symbols are always positive
     signum a = 1                -- | Roman Symbols are always positive
@@ -85,15 +85,15 @@ instance Num RomanSymbol where
         D
     fromInteger 1000 =
         M
-    fromInteger a 
-        | a < 0 = 
+    fromInteger a
+        | a < 0 =
             fromInteger $ negate a
-        | otherwise = 
+        | otherwise =
             error "Data.Roman: Won't work"
-        
+
 type RomanList =
     [RomanSymbol]
-    
+
 instance Roman RomanList where
     fromRoman (x:y:ys)
         | fromRoman x < fromRoman y =
@@ -104,19 +104,19 @@ instance Roman RomanList where
     fromRoman (x:xs) =
         fromRoman x + fromRoman xs
 
-    fromRoman _ = 
+    fromRoman _ =
         0
-        
+
 instance Num RomanList where
     (+) a b =
         fromInteger $ (fromRoman a) + (fromRoman b)
-        
+
     (-) a b =
         fromInteger $ (fromRoman a) - (fromRoman b)
-    
-    (*) a b = 
+
+    (*) a b =
         fromInteger $ (fromRoman a) * (fromRoman b)
-        
+
     negate = id                 -- | Roman Symbols are always positive
     abs = id                    -- | Roman Symbols are always positive
     signum a = 1                -- | Roman Symbols are always positive
