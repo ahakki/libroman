@@ -16,6 +16,8 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     Data.Roman
+                     , Data.Roman.RomanSymbol
+                     , Data.Roman.RomanList
   build-depends:       base >= 4.7 && < 5
   default-language:    Haskell2010
 

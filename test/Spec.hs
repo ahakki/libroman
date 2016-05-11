@@ -1,4 +1,6 @@
 import           Data.Roman
+import           Data.Roman.RomanSymbol
+import           Data.Roman.RomanList
 import           Test.Hspec
 import           Test.QuickCheck
 
@@ -10,6 +12,6 @@ main = hspec $ do
     it "fromInteger to Roman and back gives same Result" $
       property $
         \ x -> fromRoman (fromInteger x :: RomanList) == (x :: Integer)
-            || fromRoman (fromInteger (negate x) :: RomanList) 
+            || fromRoman (fromInteger (negate x) :: RomanList)
             == (negate x :: Integer)
 
