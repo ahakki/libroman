@@ -1,5 +1,5 @@
 name:                libroman
-version:             1.0.1
+version:             2.0.0
 synopsis:            arabic to roman numeral conversions
 description:         This is a Haskell thing that turns numbers into Roman numerals
 homepage:            https://ahakki.xyz
