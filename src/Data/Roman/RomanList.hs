@@ -89,6 +89,3 @@ instance Num RomanList where
 
         | otherwise =
             error "Data.Roman why?"
-
-instance Show RomanList where
-    showsPrec p a = id
