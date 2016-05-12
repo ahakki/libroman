@@ -5,6 +5,7 @@ module Data.Roman.RomanSymbol
     ) where
 
 import Data.Roman
+import Data.Char
 
 data RomanSymbol
     = Nulla
@@ -18,7 +19,7 @@ data RomanSymbol
     deriving
         ( Eq
         , Ord
-        , Read
+        -- , Read
         , Show
         , Enum
         )
@@ -56,8 +57,8 @@ instance Num RomanSymbol where
     abs = id                    -- | Roman Symbols are always positive
     signum a = 1                -- | Roman Symbols are always positive
 
-    fromInteger 0 =
-        Nulla
+    -- fromInteger 0 =
+    --     Nulla
     fromInteger 1 =
         I
     fromInteger 5 =
@@ -67,7 +68,7 @@ instance Num RomanSymbol where
     fromInteger 50 =
         L
     fromInteger 100 =
-        X
+        C
     fromInteger 500 =
         D
     fromInteger 1000 =
@@ -77,3 +78,20 @@ instance Num RomanSymbol where
             fromInteger $ negate a
         | otherwise =
             error "Data.Roman: Won't work"
+instance Read RomanSymbol where
+    readsPrec p a =
+      case fmap toUpper a of
+        "I" ->
+            [(I, "")]
+        "V" ->
+            [(V, "")]
+        "X" ->
+            [(X, "")]
+        "L" ->
+            [(L, "")]
+        "C" ->
+            [(C, "")]
+        "D" ->
+            [(D, "")]
+        "M" ->
+            [(M, "")]
