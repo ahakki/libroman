@@ -34,4 +34,4 @@ test-suite libroman-test
 
 source-repository head
   type:     git
-  location: https://bitbucket.com/ahakki/libroman.git
+  location: https://github.com/ahakki/libroman.git
