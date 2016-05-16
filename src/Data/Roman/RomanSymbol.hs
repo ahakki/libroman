@@ -19,7 +19,6 @@ data RomanSymbol
     deriving
         ( Eq
         , Ord
-        -- , Read
         , Show
         , Enum
         )
