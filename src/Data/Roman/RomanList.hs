@@ -48,7 +48,7 @@ instance Roman RomanList where
 
         opts =
             dropBlanks . condense
-            
+
         delims =
             fmap oneOf [[I],[V],[X],[L],[C],[D],[L]]
 
