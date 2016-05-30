@@ -8,24 +8,51 @@ module Data.Roman.RomanList
     ( RomanList (..)
     ) where
 
-import Data.Roman
-import Data.Roman.RomanSymbol
+import           Data.Roman
+import           Data.Roman.RomanSymbol
+
+import           Data.List.Split
 
 type RomanList =
     [RomanSymbol]
 
 instance Roman RomanList where
-    fromRoman (x:y:ys)
-        | fromRoman x < fromRoman y =
-            fromRoman y - fromRoman x + fromRoman ys
-        | otherwise =
-            fromRoman x + fromRoman (y:ys)
+    fromRoman =
+        sum . negateSubs . fromSplit . splitRn
+      where
+        negateSubs (x:y:ys)
+            | x >= y =
+                [x] ++ negateSubs (y:ys)
+            | x < y =
+                [negate x, y] ++ negateSubs ys
 
-    fromRoman (x:xs) =
-        fromRoman x + fromRoman xs
+        negateSubs [x] =
+            [x]
 
-    fromRoman _ =
-        0
+        negateSubs _ =
+            []
+
+        fromSplit a =
+                fmap (sum . fmap fromRoman) a
+
+        splitRn rn =
+            splitRn' (tail splitters) (head splitters rn)
+            where
+            splitRn' [] rn =
+                rn
+            splitRn' sptr rn =
+                splitRn' (tail sptr) ( head sptr =<< rn)
+
+        splitters =
+            fmap (split . opts ) delims
+
+        opts =
+            dropBlanks . condense
+            
+        delims =
+            fmap oneOf [[I],[V],[X],[L],[C],[D],[L]]
+
+
 
 instance Num RomanList where
     (+) a b =
