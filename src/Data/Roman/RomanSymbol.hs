@@ -76,7 +76,7 @@ instance Num RomanSymbol where
         | a < 0 =
             fromInteger $ negate a
         | otherwise =
-            error "Data.Roman: Won't work"
+            error "Data.Roman: Not Possible with single Roman Symbols. Use RomanList instead"
 instance Read RomanSymbol where
     readsPrec p a =
       case fmap toUpper a of
