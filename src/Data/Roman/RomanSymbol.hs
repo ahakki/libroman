@@ -41,7 +41,6 @@ instance Roman RomanSymbol where
     fromRoman M =
         1000
 
-
 instance Num RomanSymbol where
     (+) a b =
         fromInteger $ (fromRoman a) + (fromRoman b)
@@ -52,9 +51,9 @@ instance Num RomanSymbol where
     (*) a b =
         fromInteger $ (fromRoman a) * (fromRoman b)
 
-    negate = id                 -- | Roman Symbols are always positive
-    abs = id                    -- | Roman Symbols are always positive
-    signum a = 1                -- | Roman Symbols are always positive
+    negate = id                 -- Roman Symbols are always positive
+    abs = id                    -- Roman Symbols are always positive
+    signum a = 1                -- Roman Symbols are always positive
 
     -- fromInteger 0 =
     --     Nulla
@@ -77,6 +76,7 @@ instance Num RomanSymbol where
             fromInteger $ negate a
         | otherwise =
             error "Data.Roman: Not Possible with single Roman Symbols. Use RomanList instead"
+
 instance Read RomanSymbol where
     readsPrec p a =
       case fmap toUpper a of
