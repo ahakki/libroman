@@ -106,7 +106,7 @@ instance Num RomanList where
             I : V : []
 
         | a >= 1 =
-            I    : fromInteger (a - 1)
+            I     : fromInteger (a - 1)
 
         | a == 0 =
             []
