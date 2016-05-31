@@ -32,23 +32,23 @@ instance Roman RomanList where
         negateSubs _ =
             []
 
-        fromSplit a =
-                fmap (sum . fmap fromRoman) a
+        fromSplit =
+                fmap (sum . fmap fromRoman)
 
         splitRn rn =
             splitRn' (tail splitters) (head splitters rn)
-            where
-            splitRn' [] rn =
-                rn
-            splitRn' sptr rn =
-                splitRn' (tail sptr) ( head sptr =<< rn)
+              where
+                splitRn' [] rn =
+                    rn
+                splitRn' sptr rn =
+                    splitRn' (tail sptr) ( head sptr =<< rn)
 
         splitters =
             fmap (split . opts ) delims
 
         opts =
             dropBlanks . condense
-            
+
         delims =
             fmap oneOf [[I],[V],[X],[L],[C],[D],[L]]
 
