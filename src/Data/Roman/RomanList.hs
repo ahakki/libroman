@@ -70,7 +70,7 @@ instance Num RomanList where
 
     fromInteger a
         | a >= 1000 =
-            M    : fromInteger (a - 1000)
+            M     : fromInteger (a - 1000)
 
         | a >= 900 =
             C : M : fromInteger (a - 900)
