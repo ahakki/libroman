@@ -1,7 +1,1 @@
-This is a Haskell thing that turns numbers into Roman numerals
-
-eg: 1  -> I
-    96 -> XCVI
-    
-negative numbers are converted to positive
-    -1 -> I
+See Docs on Hackage https://hackage.haskell.org/package/libroman

@@ -1,12 +1,12 @@
 name:                libroman
-version:             2.0.0
-synopsis:            arabic to roman numeral conversions
-description:         This is a Haskell thing that turns numbers into Roman numerals
+version:             2.0.1
+synopsis:            Roman Numerals for YOU
+description:         Use Roman Numerals as a Numeric Datatype (sort of)
 homepage:            https://ahakki.xyz
 license:             BSD3
 license-file:        LICENSE
 author:              Alexander Hakki
-maintainer:          ahakki@ahakki.xyz
+maintainer:          ahk@ahakki.xyz
 copyright:           2016 Alexander Hakki
 category:            romans
 build-type:          Simple
