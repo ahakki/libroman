@@ -22,9 +22,12 @@ import Data.Char
 import Data.List.Split
 
 {- |
-The Class Roman implements a single Method, fromRoman, to convert to an Integral Type"
+a class for all types that can represent roman numerals
 -}
 class Roman r where
+    {- |
+    The Class Roman implements a single Method, fromRoman, to convert to an Integral Type
+    -}
     fromRoman :: Integral b =>  r -> b
 
 {- |
@@ -48,6 +51,9 @@ data RomanSymbol
         , Enum
         )
 
+{- |
+RomanLists are lists of RomanSymbols (duh)
+-}
 type RomanList =
     [RomanSymbol]
 
