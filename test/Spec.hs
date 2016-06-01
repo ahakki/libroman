@@ -1,6 +1,4 @@
 import           Data.Roman
-import           Data.Roman.RomanSymbol
-import           Data.Roman.RomanList
 import           Test.Hspec
 import           Test.QuickCheck
 
