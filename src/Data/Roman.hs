@@ -15,6 +15,7 @@ Portability :  portable
 module Data.Roman
     ( Roman (..)
     , RomanSymbol (..)
+    , RomanNumeral
     , RomanList
     ) where
 
@@ -22,11 +23,12 @@ import Data.Char
 import Data.List.Split
 
 {- |
-a class for all types that can represent roman numerals
+A type class for all types that can represent roman numerals
 -}
 class Roman r where
     {- |
-    The Class Roman implements a single Method, fromRoman, to convert to an Integral Type
+    The Class Roman implements a single Method, fromRoman, to convert to an
+    Integral Type
     -}
     fromRoman :: Integral b =>  r -> b
 
@@ -83,8 +85,8 @@ instance Roman RomanSymbol where
         1000
 
 {- |
-fromRoman on a RomanList also returns the expected result, if the Roman Number is not
-stricly "correct", such as XIIX -> 18.
+fromRoman on a RomanNumeral also returns the expected result, if the Roman
+Number is not stricly "correct", such as XIIX -> 18.
 -}
 instance Roman RomanNumeral where
     fromRoman =
@@ -123,8 +125,9 @@ instance Roman RomanNumeral where
             fmap oneOf [[I],[V],[X],[L],[C],[D],[L]]
 
 {- |
-Roman Symbols implement Num. This has some issues, as the result of operations such as
-I + I can not be represented as a single Roman Numeral. Use RomanList instead.
+Roman Symbols implement Num. This has some issues, as the result of
+operations such as I + I can not be represented as a single Roman Numeral.
+Use RomanNumeral instead.
 -}
 instance Num RomanSymbol where
     (+) a b =
@@ -163,8 +166,8 @@ instance Num RomanSymbol where
             error $ "Data.Roman: There is no Roman Symbol for " ++ show a
 
 {- |
-Unlike single Roman Symbols, lists of them can implement Num in all cases. However,
-Roman Numerals can never be negative.
+Unlike single Roman Symbols, lists of them can implement Num in all cases.
+Be aware that, Roman Numerals can never be negative.
 -}
 instance Num RomanNumeral where
     (+) a b =
@@ -176,9 +179,9 @@ instance Num RomanNumeral where
     (*) a b =
         fromInteger $ (fromRoman a) * (fromRoman b)
 
-    negate = id                 -- Roman Symbols are always positive
-    abs = id                    -- Roman Symbols are always positive
-    signum a = 1                -- Roman Symbols are always positive
+    negate = id                 -- Roman Numerals are always positive
+    abs = id                    -- Roman Numerals are always positive
+    signum a = 1
 
     fromInteger a
         | a >= 1000 =
