@@ -51,8 +51,15 @@ data RomanSymbol
         , Enum
         )
 
+
 {- |
-RomanLists are lists of RomanSymbols (duh)
+RomanNumerals are Lists of RomanSymbols
+-}
+type RomanNumeral =
+    [RomanSymbol]
+
+{- |
+RomanNumeral used to be called RomanList
 -}
 type RomanList =
     [RomanSymbol]
@@ -79,7 +86,7 @@ instance Roman RomanSymbol where
 fromRoman on a RomanList also returns the expected result, if the Roman Number is not
 stricly "correct", such as XIIX -> 18.
 -}
-instance Roman RomanList where
+instance Roman RomanNumeral where
     fromRoman =
         sum . negateSubs . fromSplit . splitRn
       where
@@ -159,7 +166,7 @@ instance Num RomanSymbol where
 Unlike single Roman Symbols, lists of them can implement Num in all cases. However,
 Roman Numerals can never be negative.
 -}
-instance Num RomanList where
+instance Num RomanNumeral where
     (+) a b =
         fromInteger $ (fromRoman a) + (fromRoman b)
 
