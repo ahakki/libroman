@@ -143,8 +143,8 @@ instance Num RomanSymbol where
     abs = id                    -- Roman Symbols are always positive
     signum a = 1                -- Roman Symbols are always positive
 
-    -- fromInteger 0 =
-    --     Nulla
+    fromInteger 0 =
+        Nulla
     fromInteger 1 =
         I
     fromInteger 5 =
@@ -224,7 +224,7 @@ instance Num RomanNumeral where
             I     : fromInteger (a - 1)
 
         | a == 0 =
-            []
+            0
 
         | a < 0 =
             fromInteger (negate a)
