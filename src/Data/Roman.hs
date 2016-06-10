@@ -10,7 +10,7 @@ Stability   :  experimental
 Portability :  portable
 -}
 
-{-# LANGUAGE FlexibleInstances    #-}
+{-# LANGUAGE FlexibleInstances #-}
 
 module Data.Roman
     ( Roman (..)
@@ -19,8 +19,10 @@ module Data.Roman
     , RomanList
     ) where
 
-import Data.Char
-import Data.List.Split
+import           Data.Roman.Internal
+
+import           Data.Char
+import           Data.List.Split
 
 {- |
 A type class for all types that can represent roman numerals
@@ -94,7 +96,7 @@ instance Roman RomanNumeral where
       where
         negateSubs (x:y:ys)
             | x >= y =
-                [x] ++ negateSubs (y:ys)
+                x : negateSubs (y : ys)
             | x < y =
                 [negate x, y] ++ negateSubs ys
 
@@ -131,13 +133,13 @@ Use RomanNumeral instead.
 -}
 instance Num RomanSymbol where
     (+) a b =
-        fromInteger $ (fromRoman a) + (fromRoman b)
+        fromInteger $ fromRoman a + fromRoman b
 
     (-) a b =
-        fromInteger $ (fromRoman a) - (fromRoman b)
+        fromInteger $ fromRoman a - fromRoman b
 
     (*) a b =
-        fromInteger $ (fromRoman a) * (fromRoman b)
+        fromInteger $ fromRoman a * fromRoman b
 
     negate = id                 -- Roman Symbols are always positive
     abs = id                    -- Roman Symbols are always positive
@@ -171,13 +173,13 @@ Be aware that, Roman Numerals can never be negative.
 -}
 instance Num RomanNumeral where
     (+) a b =
-        fromInteger $ (fromRoman a) + (fromRoman b)
+        fromInteger $ fromRoman a + fromRoman b
 
     (-) a b =
-        fromInteger $ (fromRoman a) - (fromRoman b)
+        fromInteger $ fromRoman a - fromRoman b
 
     (*) a b =
-        fromInteger $ (fromRoman a) * (fromRoman b)
+        fromInteger $ fromRoman a * fromRoman b
 
     negate = id                 -- Roman Numerals are always positive
     abs = id                    -- Roman Numerals are always positive
@@ -218,7 +220,7 @@ instance Num RomanNumeral where
             V     : fromInteger (a - 5)
 
         | a == 4 =
-            I : V : []
+            [I, V]
 
         | a >= 1 =
             I     : fromInteger (a - 1)
@@ -252,3 +254,10 @@ instance Read RomanSymbol where
             [(D, "")]
         "M" ->
             [(M, "")]
+
+instance Read RomanNumeral where
+    readsPrec p (x:xs) =
+        [([read [x]], xs)]
+
+    readsPrec p [] =
+        []
