@@ -17,9 +17,9 @@ module Data.Roman
     , RomanSymbol (..)
     , RomanNumeral
     , RomanList
+    , parseRoman
     ) where
 
-import           Data.Roman.Internal
 
 import           Data.Char
 import           Data.List.Split
@@ -239,25 +239,31 @@ Read is case insensitive
 -}
 instance Read RomanSymbol where
     readsPrec p a =
-      case fmap toUpper a of
-        "I" ->
+      case head (fmap toUpper a) of
+        'I' ->
             [(I, "")]
-        "V" ->
+        'V' ->
             [(V, "")]
-        "X" ->
+        'X' ->
             [(X, "")]
-        "L" ->
+        'L' ->
             [(L, "")]
-        "C" ->
+        'C' ->
             [(C, "")]
-        "D" ->
+        'D' ->
             [(D, "")]
-        "M" ->
+        'M' ->
             [(M, "")]
 
-instance Read RomanNumeral where
-    readsPrec p (x:xs) =
-        [([read [x]], xs)]
+-- instance Read RomanNumeral where
+--     readsPrec p (x:xs) =
+--         [([read [x]], xs)]
 
-    readsPrec p [] =
-        []
+--     readsPrec p [] =
+--         []
+
+parseRoman :: String -> RomanNumeral
+parseRoman (x:xs) =
+    (read [x] :: RomanSymbol) : (parseRoman xs)
+parseRoman [] =
+    []
