@@ -16,8 +16,6 @@ module Data.Roman
     ( Roman (..)
     , RomanSymbol (..)
     , RomanNumeral
-    , RomanList
-    , parseRoman
     ) where
 
 
@@ -60,12 +58,6 @@ data RomanSymbol
 RomanNumerals are Lists of RomanSymbols
 -}
 type RomanNumeral =
-    [RomanSymbol]
-
-{- |
-RomanNumeral used to be called RomanList
--}
-type RomanList =
     [RomanSymbol]
 
 instance Roman RomanSymbol where
@@ -141,9 +133,9 @@ instance Num RomanSymbol where
     (*) a b =
         fromInteger $ fromRoman a * fromRoman b
 
-    negate = id                 -- Roman Symbols are always positive
-    abs = id                    -- Roman Symbols are always positive
-    signum a = 1                -- Roman Symbols are always positive
+    negate = id
+    abs = id
+    signum a = 1
 
     fromInteger 0 =
         Nulla
@@ -226,7 +218,7 @@ instance Num RomanNumeral where
             I     : fromInteger (a - 1)
 
         | a == 0 =
-            0
+            []
 
         | a < 0 =
             fromInteger (negate a)
@@ -238,32 +230,47 @@ instance Num RomanNumeral where
 Read is case insensitive
 -}
 instance Read RomanSymbol where
-    readsPrec p a =
-      case head (fmap toUpper a) of
+    readsPrec p (a : []) =
+      case toUpper a of
+        'N' ->
+            [(Nulla, [])]
         'I' ->
-            [(I, "")]
+            [(I,     [])]
         'V' ->
-            [(V, "")]
+            [(V,     [])]
         'X' ->
-            [(X, "")]
+            [(X,     [])]
         'L' ->
-            [(L, "")]
+            [(L,     [])]
         'C' ->
-            [(C, "")]
+            [(C,     [])]
         'D' ->
-            [(D, "")]
+            [(D,     [])]
         'M' ->
-            [(M, "")]
+            [(M,     [])]
+        _   ->
+            error "Data.Roman: Parse Error"
+    readsPrec p (x:xs) =
+      case fmap toUpper (x:xs) of
+        "NULLA" ->
+            [(Nulla, [])]
+        _   ->
+            error "Data.Roman: Parse Error"
+    readsPrec p _ =
+        error "Data.Roman: Parse Error"
 
--- instance Read RomanNumeral where
---     readsPrec p (x:xs) =
---         [([read [x]], xs)]
+instance {-# OVERLAPPING #-} Read RomanNumeral where
+    readsPrec p a =
+        [(parseRoman a, [])]
+      where
+        parseRoman :: String -> RomanNumeral
+        parseRoman (x:xs) =
+            (read [x] :: RomanSymbol) : (parseRoman xs)
+        parseRoman [] =
+            []
 
---     readsPrec p [] =
---         []
-
-parseRoman :: String -> RomanNumeral
-parseRoman (x:xs) =
-    (read [x] :: RomanSymbol) : (parseRoman xs)
-parseRoman [] =
-    []
+instance {-# OVERLAPPING #-} Show RomanNumeral where
+    show (x:xs) =
+            show x ++ show xs
+    show [] =
+         []
