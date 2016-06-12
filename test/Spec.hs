@@ -13,4 +13,4 @@ main = hspec $ do
             || fromRoman (fromInteger (negate x) :: RomanNumeral)
             == (negate x :: Integer)
     it "works with unconventional romans like XIIX -> 18" $ do
-      fromRoman ([X, I, I, X] :: RomanList) `shouldBe` 18
+      fromRoman ([X, I, I, X] :: RomanNumeral) `shouldBe` 18
