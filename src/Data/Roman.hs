@@ -1,7 +1,7 @@
 -- Roman.hs
 {- |
 Module      :  $Header$
-Description :  From Roman to Arabic and back
+Description :  Roman Numerals
 Copyright   :  (c) Alexander Hakki
 License     :  BSD3
 
