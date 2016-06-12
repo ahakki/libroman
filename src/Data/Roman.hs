@@ -259,6 +259,10 @@ instance Read RomanSymbol where
     readsPrec p _ =
         error "Data.Roman: Parse Error"
 
+{-|
+Overlaps instance Read [a] with a specific version,
+so that "xxi" -> [X, X, I]
+-}
 instance {-# OVERLAPPING #-} Read RomanNumeral where
     readsPrec p a =
         [(parseRoman a, [])]
