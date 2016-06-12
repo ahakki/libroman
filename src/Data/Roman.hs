@@ -110,7 +110,7 @@ instance Roman RomanNumeral where
                     splitRn' (tail sptr) ( head sptr =<< rn)
 
         splitters =
-            fmap (split . opts ) delims
+            fmap (split . opts) delims
 
         opts =
             dropBlanks . condense
@@ -173,8 +173,8 @@ instance Num RomanNumeral where
     (*) a b =
         fromInteger $ fromRoman a * fromRoman b
 
-    negate = id                 -- Roman Numerals are always positive
-    abs = id                    -- Roman Numerals are always positive
+    negate = id
+    abs = id
     signum a = 1
 
     fromInteger a
@@ -212,7 +212,7 @@ instance Num RomanNumeral where
             V     : fromInteger (a - 5)
 
         | a == 4 =
-            [I, V]
+            I : V : fromInteger (a - 4)
 
         | a >= 1 =
             I     : fromInteger (a - 1)
