@@ -32,6 +32,3 @@ main = hspec $ do
              let unconvVal = [X, I, I, X]
              let convVal   = [X, V, I, I, I]
              unconvVal == convVal `shouldBe` False
-
-    it "negative RomanNumerals are equal to their Positive equivalents" $ do
-             12 `shouldBe` (-12)
