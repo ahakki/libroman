@@ -21,7 +21,9 @@ module Data.Roman
 
 import           Data.Char
 import           Data.List.Split
+import           Control.Exception
 
+-- Type class Roman
 {- |
 A type class for all types that can represent roman numerals
 -}
@@ -30,8 +32,10 @@ class Roman r where
     The Class Roman implements a single Method, fromRoman, to convert to an
     Integral Type
     -}
-    fromRoman :: Integral b =>  r -> b
+    fromRoman :: (Roman r, Integral b) =>  r -> b
 
+
+-- Roman Symbols
 {- |
 RomanSymbols from I to M
 
@@ -53,13 +57,6 @@ data RomanSymbol
         , Enum
         )
 
-
-{- |
-RomanNumerals are Lists of RomanSymbols
--}
-type RomanNumeral =
-    [RomanSymbol]
-
 instance Roman RomanSymbol where
     fromRoman Nulla =
         0
@@ -77,6 +74,46 @@ instance Roman RomanSymbol where
         500
     fromRoman M =
         1000
+
+
+{- |
+Read is case insensitive
+-}
+instance Read RomanSymbol where
+    readsPrec p (a : []) =
+      case toUpper a of
+        'N' ->
+            [(Nulla, [])]
+        'I' ->
+            [(I,     [])]
+        'V' ->
+            [(V,     [])]
+        'X' ->
+            [(X,     [])]
+        'L' ->
+            [(L,     [])]
+        'C' ->
+            [(C,     [])]
+        'D' ->
+            [(D,     [])]
+        'M' ->
+            [(M,     [])]
+        _   ->
+            error "Data.Roman: Parse Error"
+    readsPrec p (x:xs) =
+      case fmap toUpper (x:xs) of
+        "NULLA" ->
+            [(Nulla, [])]
+        _   ->
+            error "Data.Roman: Parse Error"
+    readsPrec p _ =
+        error "Data.Roman: Parse Error"
+
+{- |
+Roman Numerals are represented as Lists of RomanSymbols
+-}
+type RomanNumeral =
+    [RomanSymbol]
 
 {- |
 fromRoman on a RomanNumeral also returns the expected result, if the Roman
@@ -119,153 +156,91 @@ instance Roman RomanNumeral where
             fmap oneOf [[I],[V],[X],[L],[C],[D],[L]]
 
 {- |
-Roman Symbols implement Num. This has some issues, as the result of
-operations such as I + I can not be represented as a single Roman Numeral.
-Use RomanNumeral instead.
--}
-instance Num RomanSymbol where
-    (+) a b =
-        fromInteger $ fromRoman a + fromRoman b
-
-    (-) a b =
-        fromInteger $ fromRoman a - fromRoman b
-
-    (*) a b =
-        fromInteger $ fromRoman a * fromRoman b
-
-    negate = id
-    abs = id
-    signum a = 1
-
-    fromInteger 0 =
-        Nulla
-    fromInteger 1 =
-        I
-    fromInteger 5 =
-        V
-    fromInteger 10 =
-        X
-    fromInteger 50 =
-        L
-    fromInteger 100 =
-        C
-    fromInteger 500 =
-        D
-    fromInteger 1000 =
-        M
-    fromInteger a
-        | a < 0 =
-            fromInteger $ negate a
-        | otherwise =
-            error $ "Data.Roman: There is no Roman Symbol for " ++ show a
-
-{- |
-Unlike single Roman Symbols, lists of them can implement Num in all cases.
 Be aware that, Roman Numerals can never be negative.
 -}
 instance Num RomanNumeral where
     (+) a b =
         fromInteger $ fromRoman a + fromRoman b
 
-    (-) a b =
-        fromInteger $ fromRoman a - fromRoman b
+    (-) a b
+        | a >= b =
+            fromInteger $ fromRoman a - fromRoman b
+
+        | otherwise =
+            throw ( Underflow :: ArithException )
 
     (*) a b =
         fromInteger $ fromRoman a * fromRoman b
 
-    negate = id
+    negate = throw ( Underflow :: ArithException )
     abs = id
     signum a = 1
 
-    fromInteger a
-        | a >= 1000 =
-            M     : fromInteger (a - 1000)
+    fromInteger 0 =
+        [Nulla]
+    fromInteger a =
+        fromInteger' a
+      where
+        fromInteger' a
+            | a >= 1000 =
+                M     : fromInteger' (a - 1000)
 
-        | a >= 900 =
-            C : M : fromInteger (a - 900)
+            | a >= 900 =
+                C : M : fromInteger' (a - 900)
 
-        | a >= 500 =
-            D     : fromInteger (a - 500)
+            | a >= 500 =
+                D     : fromInteger' (a - 500)
 
-        | a >= 400 =
-            C : D : fromInteger (a - 400)
+            | a >= 400 =
+                C : D : fromInteger' (a - 400)
 
-        | a >= 100 =
-            C     : fromInteger (a - 100)
+            | a >= 100 =
+                C     : fromInteger' (a - 100)
 
-        | a >= 90 =
-            X : C : fromInteger (a - 90)
+            | a >= 90 =
+                X : C : fromInteger' (a - 90)
 
-        | a >= 50 =
-            L     : fromInteger (a - 50)
+            | a >= 50 =
+                L     : fromInteger' (a - 50)
 
-        | a >= 40 =
-            X : L : fromInteger (a - 40)
+            | a >= 40 =
+                X : L : fromInteger' (a - 40)
 
-        | a >= 10 =
-            X     : fromInteger (a - 10)
+            | a >= 10 =
+                X     : fromInteger' (a - 10)
 
-        | a >= 9 =
-            I : X : fromInteger (a - 9)
+            | a >= 9 =
+                I : X : fromInteger' (a - 9)
 
-        | a >= 5 =
-            V     : fromInteger (a - 5)
+            | a >= 5 =
+                V     : fromInteger' (a - 5)
 
-        | a == 4 =
-            I : V : fromInteger (a - 4)
+            | a == 4 =
+                I : V : fromInteger' (a - 4)
 
-        | a >= 1 =
-            I     : fromInteger (a - 1)
+            | a >= 1 =
+                I     : fromInteger' (a - 1)
 
-        | a == 0 =
-            []
+            | a == 0 =
+                []
 
-        | a < 0 =
-            fromInteger (negate a)
+            | a < 0 =
+                fromInteger' (negate a)
 
-        | otherwise =
-            error "Data.Roman: why?"
+            | otherwise =
+                error "Data.Roman: why?"
 
-{- |
-Read is case insensitive
--}
-instance Read RomanSymbol where
-    readsPrec p (a : []) =
-      case toUpper a of
-        'N' ->
-            [(Nulla, [])]
-        'I' ->
-            [(I,     [])]
-        'V' ->
-            [(V,     [])]
-        'X' ->
-            [(X,     [])]
-        'L' ->
-            [(L,     [])]
-        'C' ->
-            [(C,     [])]
-        'D' ->
-            [(D,     [])]
-        'M' ->
-            [(M,     [])]
-        _   ->
-            error "Data.Roman: Parse Error"
-    readsPrec p (x:xs) =
-      case fmap toUpper (x:xs) of
-        "NULLA" ->
-            [(Nulla, [])]
-        _   ->
-            error "Data.Roman: Parse Error"
-    readsPrec p _ =
-        error "Data.Roman: Parse Error"
 
 {-|
 Overlaps instance Read [a] with a specific version,
 so that "xxi" -> [X, X, I]
 -}
 instance {-# OVERLAPPING #-} Read RomanNumeral where
-    readsPrec p a =
-        [(parseRoman a, [])]
+    readsPrec p a
+        | fmap toUpper a == "NULLA" =
+            [([Nulla], [])]
+        | otherwise =
+            [(parseRoman a, [])]
       where
         parseRoman :: String -> RomanNumeral
         parseRoman (x:xs) =
@@ -278,3 +253,32 @@ instance {-# OVERLAPPING #-} Show RomanNumeral where
             show x ++ show xs
     show [] =
          []
+
+instance {-# OVERLAPPING #-} Ord RomanNumeral where
+    compare x y=
+        compare (toInteger x) (toInteger y)
+
+    (<=) x y=
+        (<=) (toInteger x) (toInteger y)
+
+instance Real RomanNumeral where
+    toRational =
+        toRational . fromRoman
+
+instance Integral RomanNumeral where
+    quotRem x y =
+        tupleConv $ quotRem (fromRoman x) (fromRoman y)
+          where
+            tupleConv :: Integral a => (a, a) ->(RomanNumeral, RomanNumeral)
+            tupleConv (x, y) =
+                (fromIntegral x, fromIntegral y)
+
+    toInteger =
+        fromRoman
+
+instance Enum RomanNumeral where
+    toEnum =
+        fromIntegral
+
+    fromEnum =
+        fromIntegral
