@@ -135,8 +135,8 @@ enables you to represent the same numerical value in multiple ways.
 >   rep3 :: RomanNumeral
 >   rep3 = 4
 >
->   rep1 == rep2        -- this will return false
->   rep2 == rep3        -- this will return true
+>   no =  rep1 == rep2        -- this will return false
+>   yes = rep2 == rep3        -- this will return true
 
 Numerical Type Converting
 -------------------------
