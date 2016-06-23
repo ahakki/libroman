@@ -125,13 +125,15 @@ Comparison of RomanNumerals
 And of course you can compare two `RomanNumeral`s with
 `(>=)`, `(>)`, `(==)`, `(<)` and `(<=)`
 
-**Beware:** `(==)` has a little quirk stemming from the fact that it is possible
-to represent the same numerical value in multiple ways. `(==)` will only return
+**Beware:** `(==)` has a little quirk stemming from the fact that `RomanNumeral`
+enables you to represent the same numerical value in multiple ways.
+`(==)` will only return
 `True` if the representation is equal, not just the numerical value.
 
 >   rep1 = [I, I, I, I]
 >   rep2 = [I, V]
->   rep3 = 4    :: RomanNumeral
+>   rep3 :: RomanNumeral
+>   rep3 = 4
 >
 >   rep1 == rep2        -- this will return false
 >   rep2 == rep3        -- this will return true
