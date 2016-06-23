@@ -8,14 +8,17 @@ Haskell Files should declare a module
 Tutorial for libroman
 =====================
 
-This Tutorial is a literate Haskell file so if you want to play along with the Tutorial while we do this you can simply boot up ghci and load this module with `ghci> :l Data.Roman.Tutorial`
+libroman lets you use roman numerals in Haskell. They support basic math and conversion to and from strings. This Tutorial is a literate Haskell file so if you want to play along with the Tutorial while we do this you can simply boot up ghci and load this module with `ghci> :l Data.Roman.Tutorial`
 
 Type Class Roman
 ----------------
 
-The Module `Data.Roman` exports the type class **Roman**. Which has a single method `fromRoman` to convert from a `Roman` value to any `Integral` value.
+The Module `Data.Roman` exports the type class **`Roman`**. Which has a single method `fromRoman` to convert from a `Roman` value to any `Integral` value.
 
-There are two data types that implement this type class: `RomanSymbol` for single roman numerals (as in the symbols), and `RomanNumeral` which is used to represent the combination of these symbols.
+There are two data types that implement this type class:
+
+-   `RomanSymbol`: represents the symbols that make up roman numerals
+-   `RomanNumeral`: represents the combination of these symbols.
 
 The Data Type `RomanSymbol` is a simple ADT that has the following Constructors: `Nulla | I | V | X | L | C | D | M` where `Nulla` represents zero.
 
@@ -84,23 +87,38 @@ Just as with any other enumerable value, you can declare ranges:
   r'' = [[C, X, I]..[C, C]]
 ```
 
-And of course you can compare two `RomanNumeral`s with `(>=)`, `(>)`, `(==)`, `(<)` and `(<=)`
-
 **Beware:** The Romans didn't have a concept of negative numbers, so `RomanNumeral` can't represent negative numbers. This means that the function `negate` will cause an *Underflow Exception*. Same if you subtract a larger RomanNumeral from a smaller one, or perform any other operation that would create a negative value.
 
 *I don't know how to solve this problem ( apart from dependent typing :P ), as simply throwing an exception and crashing everything ruins part of the type-checked goodness we have in haskell, but returning the wrong result because of this seems even worse somehow.*
 
 ``` haskell
-   baloney  = negate e          -- This throws an error if evaluated!
+  baloney  = negate e          -- This throws an error if evaluated!
+```
 
--- Try to guess which of the next two
--- thows an Exception, and which one doesn't
+Try to guess which of the next two thows an Exception, and which one doesn't
 
-   hogwash  = a - b + b
-   salami   = a + b - b
+``` haskell
+  hogwash  = a - b + b
+  salami   = a + b - b
 ```
 
 *In a nutshell: Mathematically you can use `RomanNumeral` in basically the same way as any other unsigned integral value (`Word` for instance)*
+
+Comparison of RomanNumerals
+---------------------------
+
+And of course you can compare two `RomanNumeral`s with `(>=)`, `(>)`, `(==)`, `(<)` and `(<=)`
+
+**Beware:** `(==)` has a little quirk stemming from the fact that it is possible to represent the same numerical value in multiple ways. `(==)` will only return `True` if the representation is equal, not just the numerical value.
+
+``` haskell
+  rep1 = [I, I, I, I]
+  rep2 = [I, V]
+  rep3 = 4    :: RomanNumeral
+
+  rep1 == rep2        -- this will return false
+  rep2 == rep3        -- this will return true
+```
 
 Numerical Type Converting
 -------------------------
