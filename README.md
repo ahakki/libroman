@@ -80,6 +80,7 @@ to do basic math:
   e = b - c       -- CCLXVI
   f = e * d
 ```
+
 Check the result of f by yourself: `ghci> f`
 
 You will see that roman numerals are not really suited for big numbers.
@@ -92,6 +93,7 @@ and so on.
 ``` haskell
   g = div f d     -- CCLXV
 ```
+
 Just as with any other enumerable value, you can declare ranges:
 
 ``` haskell
@@ -100,6 +102,7 @@ Just as with any other enumerable value, you can declare ranges:
   r'  = [a..b]
   r'' = [[C, X, I]..[C, C]]
 ```
+
 **Beware:** The Romans didn't have a concept of negative numbers, so
 `RomanNumeral` can't represent negative numbers. This means that the
 function `negate` will cause an *Underflow Exception*. Same if you
@@ -116,12 +119,14 @@ because of this seems even worse somehow.*
   baloney  = negate e          -- This throws an error if evaluated!
 
 ```
+
 Try to guess which of the next two thows an Exception, and which one doesn't
 
 ``` haskell
   hogwash  = a - b + b
   salami   = a + b - b
 ```
+
 *In a nutshell: Mathematically you can use `RomanNumeral` in basically the
 same way as any other unsigned integral value (`Word` for instance)*
 
@@ -145,6 +150,7 @@ enables you to represent the same numerical value in multiple ways.
   no =  rep1 == rep2        -- this will return false
   yes = rep2 == rep3        -- this will return true
 ```
+
 Numerical Type Converting
 -------------------------
 
@@ -166,6 +172,7 @@ a lot more general, as you can convert from any `Integral` value to any other
   k :: RomanNumeral
   k = fromIntegral thisIsAnInteger
 ```
+
 libroman is pretty good at interpreting the 'correct' numeric value for
 `RomanNumeral`s which don't follow the classic rules of writing roman
 numerals, for instance double subtraction as in XIIX, or repeating the same character more than 3 times as in IIII.
@@ -174,6 +181,7 @@ numerals, for instance double subtraction as in XIIX, or repeating the same char
   weird = [X, I, I, X]
   clock = [I, I, I, I]
 ```
+
 If you check these values in ghci ( using `fromIntegral` ) you will see that
 they are interpreted as `18` and `4` which is the most sensible interpretation
 (imho)
