@@ -32,7 +32,7 @@ class Roman r where
     The Class Roman implements a single Method, fromRoman, to convert to an
     Integral Type
     -}
-    fromRoman :: (Roman r, Integral b) =>  r -> b
+    fromRoman :: Integral b => r -> b
 
 
 -- Roman Symbols
@@ -80,7 +80,7 @@ instance Roman RomanSymbol where
 Read is case insensitive
 -}
 instance Read RomanSymbol where
-    readsPrec p (a : []) =
+    readsPrec _ (a : []) =
       case toUpper a of
         'N' ->
             [(Nulla, [])]
@@ -100,13 +100,13 @@ instance Read RomanSymbol where
             [(M,     [])]
         _   ->
             error "Data.Roman: Parse Error"
-    readsPrec p (x:xs) =
+    readsPrec _ (x:xs) =
       case fmap toUpper (x:xs) of
         "NULLA" ->
             [(Nulla, [])]
         _   ->
             error "Data.Roman: Parse Error"
-    readsPrec p _ =
+    readsPrec _ _ =
         error "Data.Roman: Parse Error"
 
 {- |
@@ -123,6 +123,7 @@ instance Roman RomanNumeral where
     fromRoman =
         sum . negateSubs . fromSplit . splitRn
       where
+        negateSubs :: (Num a, Ord a) => [a] -> [a]
         negateSubs (x:y:ys)
             | x >= y =
                 x : negateSubs (y : ys)
@@ -141,10 +142,10 @@ instance Roman RomanNumeral where
         splitRn rn =
             splitRn' (tail splitters) (head splitters rn)
               where
-                splitRn' [] rn =
-                    rn
-                splitRn' sptr rn =
-                    splitRn' (tail sptr) ( head sptr =<< rn)
+                splitRn' [] r =
+                    r
+                splitRn' sptr r =
+                    splitRn' (tail sptr) ( head sptr =<< r)
 
         splitters =
             fmap (split . opts) delims
@@ -174,12 +175,12 @@ instance Num RomanNumeral where
 
     negate = throw ( Underflow :: ArithException )
     abs = id
-    signum a = 1
+    signum _ = 1
 
     fromInteger 0 =
         [Nulla]
-    fromInteger a =
-        fromInteger' a
+    fromInteger r =
+        fromInteger' r
       where
         fromInteger' a
             | a >= 1000 =
@@ -236,7 +237,7 @@ Overlaps instance Read [a] with a specific version,
 so that "xxi" -> [X, X, I]
 -}
 instance {-# OVERLAPPING #-} Read RomanNumeral where
-    readsPrec p a
+    readsPrec _ a
         | fmap toUpper a == "NULLA" =
             [([Nulla], [])]
         | otherwise =
@@ -262,16 +263,16 @@ instance {-# OVERLAPPING #-} Ord RomanNumeral where
         (<=) (toInteger x) (toInteger y)
 
 instance Real RomanNumeral where
-    toRational =
-        toRational . fromRoman
+    toRational a =
+        toRational (fromRoman a :: Integer)
 
 instance Integral RomanNumeral where
     quotRem x y =
-        tupleConv $ quotRem (fromRoman x) (fromRoman y)
+        tupleConv $ quotRem (fromRoman x :: Integer) (fromRoman y :: Integer)
           where
             tupleConv :: Integral a => (a, a) ->(RomanNumeral, RomanNumeral)
-            tupleConv (x, y) =
-                (fromIntegral x, fromIntegral y)
+            tupleConv (m, n) =
+                (fromIntegral m, fromIntegral n)
 
     toInteger =
         fromRoman
