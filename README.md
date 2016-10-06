@@ -1,27 +1,22 @@
-<!--
-Haskell Files should declare a module
-
-``` haskell
-  module Data.Roman.Tutorial where
-  import Data.Roman
-```
--->
-
 Tutorial for libroman
 =====================
 
-libroman lets you use roman numerals in Haskell. They support basic math and
+**libroman** lets you use roman numerals in Haskell. They support basic math and
 conversion to and from strings.
-This Tutorial is a literate Haskell file so if you want to play along with the
-Tutorial while we do this you can simply boot up ghci and load this module with
-`ghci> :l Data.Roman.Tutorial`
+
+To start using **libroman** you have to import the Data.Roman module
+
+```haskell
+ module MyModule where
+ import Data.Roman
+```
 
 
 Type Class Roman
 ----------------
 
 The Module `Data.Roman` exports the type class **`Roman`**. Which has a single
-method `fromRoman` to convert from a `Roman` value to any `Integral` value.
+method `fromRoman` to convert from a `Roman` value to any other `Integral` value.
 
 There are two data types that implement this type class:
 
@@ -38,6 +33,7 @@ extension the numeric values they represent.
 
 For the rest of this tutorial we will be working with `RomanNumeral`
 
+
 Data Type RomanNumeral
 ----------------------
 
@@ -53,20 +49,44 @@ member of a whole host of other type classes.
 - `Real`
 - `Integral`
 
-Because a numeric literal `a` is syntactic sugar for `fromInteger a` the
+Because a numeric literal (eg. `12`) can be thought of as syntactic sugar for `fromInteger n` the
 easiest way to declare a RomanNumeral value is like this:
 
 ``` haskell
   a = 12 :: RomanNumeral
+   XXI
 
   b :: RomanNumeral
   b = 273
 ```
-You can also create RomanNumerals manually using List Syntax. If, for instance,
+Or in ghci like this:
+
+```haskell
+λ> let myRoman = 45 :: RomanNumeral
+λ> myRoman
+   XLV
+λ> 234 :: RomanNumeral
+   CCXXXIV
+λ> [X,I,V]
+   XIV
+```
+
 you want the number 4 represented as IIII, you could just do this.
 
 ``` haskell
-  c = [I, I, I, I]
+λ> let c = [I, I, I, I]
+```
+
+## Converting to Strings
+
+`RomanNumeral` implements `Read` and `Show` to convert to and from `String`
+
+`read` is case insensitive.
+
+```haskell
+  l = show k          -- "XII"
+  m = read "XXXII"    :: RomanNumeral
+  n = read "nulla"    :: RomanNumeral
 ```
 
 Mathy Stuff with RomanNumeral
@@ -87,8 +107,7 @@ You will see that roman numerals are not really suited for big numbers.
 Try to keep your math under 10'000 or prepare for lots or `M`s
 
 Roman numerals can't represent fractional values so you can't use `(\)`, but
-you can use the methods of the `Integral` type class to do Integer division
-and so on.
+you can use the methods of the `Integral` type class to do Integer division.
 
 ``` haskell
   g = div f d     -- CCLXV
@@ -128,7 +147,9 @@ Try to guess which of the next two thows an Exception, and which one doesn't
 ```
 
 *In a nutshell: Mathematically you can use `RomanNumeral` in basically the
-same way as any other unsigned integral value (`Word` for instance)*
+same way as any other unsigned integral value (`Word` for instance), but 
+instead of wrapping you get an Exception*
+
 
 Comparison of RomanNumerals
 ---------------------------
@@ -142,14 +163,17 @@ enables you to represent the same numerical value in multiple ways.
 `True` if the representation is equal, not just the numerical value.
 
 ``` haskell
-  rep1 = [I, I, I, I]
-  rep2 = [I, V]
-  rep3 :: RomanNumeral
-  rep3 = 4
+λ> let rep1 = [I, I, I, I]		-- clock style
+λ> let rep2 = [I, V]             -- normal style
+λ> let rep3 :: RomanNumeral
+λ> let rep3 = 4
 
-  no =  rep1 == rep2        -- this will return false
-  yes = rep2 == rep3        -- this will return true
+λ> rep1 == rep2 
+   False
+λ> rep2 == rep3   
+   True
 ```
+
 
 Numerical Type Converting
 -------------------------
@@ -189,16 +213,3 @@ they are interpreted as `18` and `4` which is the most sensible interpretation
 You can probably guess the types of `h`, `i` and `j`, but if you are not sure
 you can check in ghci with `:t`
 
-
-Converting to Strings
----------------------
-
-`RomanNumeral` implements `Read` and `Show` to convert to and from `String`
-
-`read` is case insensitive.
-
-``` haskell
-  l = show k          -- "XII"
-  m = read "XXXII"    :: RomanNumeral
-  n = read "nulla"    :: RomanNumeral
-```
