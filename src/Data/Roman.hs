@@ -39,11 +39,9 @@ class Roman r where
 {- |
 RomanSymbols from I to M
 
-Zero is represented as the latin word Nulla
 -}
 data RomanSymbol
-    = Nulla
-    | I
+    = I
     | V
     | X
     | L
@@ -57,9 +55,8 @@ data RomanSymbol
         , Enum
         )
 
+
 instance Roman RomanSymbol where
-    fromRoman Nulla =
-        0
     fromRoman I =
         1
     fromRoman V =
@@ -82,8 +79,6 @@ Read is case insensitive
 instance Read RomanSymbol where
     readsPrec _ (a : []) =
       case toUpper a of
-        'N' ->
-            [(Nulla, [])]
         'I' ->
             [(I,     [])]
         'V' ->
@@ -100,14 +95,9 @@ instance Read RomanSymbol where
             [(M,     [])]
         _   ->
             error "Data.Roman: Parse Error"
-    readsPrec _ (x:xs) =
-      case fmap toUpper (x:xs) of
-        "NULLA" ->
-            [(Nulla, [])]
-        _   ->
-            error "Data.Roman: Parse Error"
     readsPrec _ _ =
         error "Data.Roman: Parse Error"
+
 
 {- |
 Roman Numerals are represented as Lists of RomanSymbols
@@ -177,8 +167,7 @@ instance Num RomanNumeral where
     abs = id
     signum _ = 1
 
-    fromInteger 0 =
-        [Nulla]
+
     fromInteger r =
         fromInteger' r
       where
@@ -237,11 +226,8 @@ Overlaps instance Read [a] with a specific version,
 so that "xxi" -> [X, X, I]
 -}
 instance {-# OVERLAPPING #-} Read RomanNumeral where
-    readsPrec _ a
-        | fmap toUpper a == "NULLA" =
-            [([Nulla], [])]
-        | otherwise =
-            [(parseRoman a, [])]
+    readsPrec _ a =
+        [(parseRoman a, [])]
       where
         parseRoman :: String -> RomanNumeral
         parseRoman (x:xs) =
