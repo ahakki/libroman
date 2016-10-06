@@ -54,7 +54,6 @@ easiest way to declare a RomanNumeral value is like this:
 
 ``` haskell
   a = 12 :: RomanNumeral
-   XXI
 
   b :: RomanNumeral
   b = 273
