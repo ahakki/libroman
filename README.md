@@ -1,3 +1,4 @@
+
 Tutorial for libroman
 =====================
 
@@ -61,13 +62,13 @@ easiest way to declare a RomanNumeral value is like this:
 Or in ghci like this:
 
 ```haskell
-λ> let myRoman = 45 :: RomanNumeral
-λ> myRoman
-   XLV
-λ> 234 :: RomanNumeral
-   CCXXXIV
-λ> [X,I,V]
-   XIV
+λ>  let myRoman = 45 :: RomanNumeral
+λ>  myRoman
+    XLV
+λ>  234 :: RomanNumeral
+    CCXXXIV
+λ>  [X,I,V]
+    XIV
 ```
 
 you want the number 4 represented as IIII, you could just do this.
@@ -87,6 +88,7 @@ you want the number 4 represented as IIII, you could just do this.
   m = read "XXXII"    :: RomanNumeral
   n = read "nulla"    :: RomanNumeral
 ```
+
 
 Mathy Stuff with RomanNumeral
 -----------------------------
@@ -162,15 +164,15 @@ enables you to represent the same numerical value in multiple ways.
 `True` if the representation is equal, not just the numerical value.
 
 ``` haskell
-λ> let rep1 = [I, I, I, I]		-- clock style
-λ> let rep2 = [I, V]             -- normal style
-λ> let rep3 :: RomanNumeral
-λ> let rep3 = 4
+λ>  let rep1 = [I, I, I, I]		-- clock style
+λ>  let rep2 = [I, V]             -- normal style
+λ>  let rep3 :: RomanNumeral
+λ>  let rep3 = 4
 
-λ> rep1 == rep2 
-   False
-λ> rep2 == rep3   
-   True
+λ>  rep1 == rep2 
+    False
+λ>  rep2 == rep3   
+    True
 ```
 
 
@@ -183,17 +185,16 @@ a lot more general, as you can convert from any `Integral` value to any other
 `Integral` value, so you can use it to both convert to and from RomanNumeral.
 
 ``` haskell
-  thisIsAnInteger = 12    -- Numeric literals default to Integer
-  thisIsARoman    = 44    :: RomanNumeral
-
-  h = toInteger thisIsARoman
-
-  i = fromIntegral thisIsARoman
-
-  j = fromIntegral thisIsAnInteger
-
-  k :: RomanNumeral
-  k = fromIntegral thisIsAnInteger
+λ>  let thisIsAnInteger =  12   -- Numeric literals default to Integer
+λ>  let thisIsARoman    = (44   :: RomanNumeral)
+λ>  toInteger thisIsARoman
+	44
+λ>  fromIntegral thisIsARoman :: Word -- You can convert to any Integral type
+	44
+λ>  fromIntegral thisIsAnInteger
+	12
+λ>  fromIntegral thisIsAnInteger :: RomanNumeral
+	XII
 ```
 
 libroman is pretty good at interpreting the 'correct' numeric value for
@@ -201,14 +202,11 @@ libroman is pretty good at interpreting the 'correct' numeric value for
 numerals, for instance double subtraction as in XIIX, or repeating the same character more than 3 times as in IIII.
 
 ``` haskell
-  weird = [X, I, I, X]
-  clock = [I, I, I, I]
+λ>  let weird = [X, I, I, X]
+λ>  let clock = [I, I, I, I]
+λ>	fromIntegral weird
+	18
+λ>	fromIntegral clock
+	4
 ```
-
-If you check these values in ghci ( using `fromIntegral` ) you will see that
-they are interpreted as `18` and `4` which is the most sensible interpretation
-(imho)
-
-You can probably guess the types of `h`, `i` and `j`, but if you are not sure
-you can check in ghci with `:t`
 
