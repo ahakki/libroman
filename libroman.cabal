@@ -1,5 +1,5 @@
 name:                libroman
-version:             3.1.0
+version:             3.1.1
 synopsis:            Use Roman Numerals as a Numeric Datatype (sort of)
 description:         See Readme.md and Haddocks on Hackage
 homepage:            https://ahakki.xyz
