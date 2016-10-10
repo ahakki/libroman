@@ -1,4 +1,3 @@
-
 Tutorial for libroman
 =====================
 
@@ -148,7 +147,7 @@ Try to guess which of the next two thows an Exception, and which one doesn't
 ```
 
 *In a nutshell: Mathematically you can use `RomanNumeral` in basically the
-same way as any other unsigned integral value (`Word` for instance), but 
+same way as any other unsigned integral value (`Word` for instance), but
 instead of wrapping you get an Exception*
 
 
@@ -169,9 +168,9 @@ enables you to represent the same numerical value in multiple ways.
 λ>  let rep3 :: RomanNumeral
 λ>  let rep3 = 4
 
-λ>  rep1 == rep2 
+λ>  rep1 == rep2
     False
-λ>  rep2 == rep3   
+λ>  rep2 == rep3
     True
 ```
 

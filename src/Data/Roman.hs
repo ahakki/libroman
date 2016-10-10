@@ -18,7 +18,6 @@ module Data.Roman
     , RomanNumeral
     ) where
 
-
 import           Data.Char
 import           Data.List.Split
 import           Control.Exception
