@@ -61,19 +61,19 @@ easiest way to declare a RomanNumeral value is like this:
 Or in ghci like this:
 
 ```haskell
-λ>  let myRoman = 45 :: RomanNumeral
-λ>  myRoman
-    XLV
-λ>  234 :: RomanNumeral
-    CCXXXIV
-λ>  [X,I,V]
-    XIV
+ghci>  let myRoman = 45 :: RomanNumeral
+ghci>  myRoman
+       XLV
+ghci>  234 :: RomanNumeral
+       CCXXXIV
+ghci>  [X,I,V]
+       XIV
 ```
 
 you want the number 4 represented as IIII, you could just do this.
 
 ``` haskell
-λ> let c = [I, I, I, I]
+ghci> let c = [I, I, I, I]
 ```
 
 ## Converting to Strings
@@ -159,15 +159,15 @@ enables you to represent the same numerical value in multiple ways.
 `True` if the representation is equal, not just the numerical value.
 
 ``` haskell
-λ>  let rep1 = [I, I, I, I]		-- clock style
-λ>  let rep2 = [I, V]             -- normal style
-λ>  let rep3 :: RomanNumeral
-λ>  let rep3 = 4
+ghci>  let rep1 = [I, I, I, I]       -- clock style
+ghci>  let rep2 = [I, V]             -- normal style
+ghci>  let rep3 :: RomanNumeral
+ghci>  let rep3 = 4
 
-λ>  rep1 == rep2
-    False
-λ>  rep2 == rep3
-    True
+ghci>  rep1 == rep2
+       False
+ghci>  rep2 == rep3
+       True
 ```
 
 
@@ -180,16 +180,16 @@ a lot more general, as you can convert from any `Integral` value to any other
 `Integral` value, so you can use it to both convert to and from RomanNumeral.
 
 ``` haskell
-λ>  let thisIsAnInteger =  12   -- Numeric literals default to Integer
-λ>  let thisIsARoman    = (44   :: RomanNumeral)
-λ>  toInteger thisIsARoman
-	44
-λ>  fromIntegral thisIsARoman :: Word -- You can convert to any Integral type
-	44
-λ>  fromIntegral thisIsAnInteger
-	12
-λ>  fromIntegral thisIsAnInteger :: RomanNumeral
-	XII
+ghci>  let thisIsAnInteger =  12   -- Numeric literals default to Integer
+ghci>  let thisIsARoman    = (44   :: RomanNumeral)
+ghci>  toInteger thisIsARoman
+       44
+ghci>  fromIntegral thisIsARoman :: Word -- You can convert to any Integral type
+       44
+ghci>  fromIntegral thisIsAnInteger
+       12
+ghci>  fromIntegral thisIsAnInteger :: RomanNumeral
+       XII
 ```
 
 libroman is pretty good at interpreting the 'correct' numeric value for
@@ -197,11 +197,11 @@ libroman is pretty good at interpreting the 'correct' numeric value for
 numerals, for instance double subtraction as in XIIX, or repeating the same character more than 3 times as in IIII.
 
 ``` haskell
-λ>  let weird = [X, I, I, X]
-λ>  let clock = [I, I, I, I]
-λ>	fromIntegral weird
-	18
-λ>	fromIntegral clock
-	4
+ghci>  let weird = [X, I, I, X]
+ghci>  let clock = [I, I, I, I]
+ghci>  fromIntegral weird
+       18
+ghci>  fromIntegral clock
+       4
 ```
 
