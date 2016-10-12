@@ -83,6 +83,7 @@ you want the number 4 represented as IIII, you could just do this.
 `read` is case insensitive.
 
 ```haskell
+  k = 12              :: RomanNumeral
   l = show k          -- "XII"
   m = read "XXXII"    :: RomanNumeral
   n = read "nulla"    :: RomanNumeral
@@ -96,12 +97,8 @@ Once you have some Values you can get to work. The type class `Num` enables you
 to do basic math:
 
 ``` haskell
-  d = a + b       -- CCLXXXV
-  e = b - c       -- CCLXVI
-  f = e * d
+  c = a + b       -- CCLXXXV
 ```
-
-Check the result of f by yourself: `ghci> f`
 
 You will see that roman numerals are not really suited for big numbers.
 Try to keep your math under 10'000 or prepare for lots or `M`s
@@ -110,7 +107,7 @@ Roman numerals can't represent fractional values so you can't use `(\)`, but
 you can use the methods of the `Integral` type class to do Integer division.
 
 ``` haskell
-  g = div f d     -- CCLXV
+  g = div a c
 ```
 
 Just as with any other enumerable value, you can declare ranges:
@@ -135,8 +132,7 @@ because of this seems even worse somehow.*
 
 
 ``` haskell
-  baloney  = negate e          -- This throws an error if evaluated!
-
+  baloney  = negate (12 :: RomanNumeral) -- This throws an error if evaluated!
 ```
 
 Try to guess which of the next two thows an Exception, and which one doesn't
