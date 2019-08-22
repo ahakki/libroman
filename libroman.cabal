@@ -12,6 +12,14 @@ category:            Data, Math, Numerical
 build-type:          Simple
 cabal-version:       >=1.10
 
+executable roman
+  hs-source-dirs:      cli
+  main-is:             Main.hs
+  ghc-options:         -Wall
+  default-language:    Haskell2010
+  build-depends:       base
+                    ,  libroman
+
 library
   hs-source-dirs:      src
   exposed-modules:     Data.Roman
