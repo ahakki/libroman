@@ -18,9 +18,9 @@ module Data.Roman
     , RomanNumeral
     ) where
 
-import           Data.Char
-import           Data.List.Split
-import           Control.Exception
+import Data.Char ( toUpper )
+import Data.List.Split ( condense, dropBlanks, oneOf, split )
+import Control.Exception ( throw, ArithException(Underflow) )
 
 -- Type class Roman
 {- |
@@ -38,10 +38,11 @@ class Roman r where
 {- |
 RomanSymbols from I to M
 
-Zero is represented as the latin word Nulla
+Zero is represented as N for the latin word Nulla
 -}
 data RomanSymbol
-    = Nulla
+    = Nulla     --Nulla is depreciated and now we use N
+    | N         --Here it is!
     | I
     | V
     | X
@@ -57,8 +58,10 @@ data RomanSymbol
         )
 
 instance Roman RomanSymbol where
-    fromRoman Nulla =
+    fromRoman Nulla =       --Nulla is depreciated
         0
+    fromRoman N =           --Now we use N!
+        0    
     fromRoman I =
         1
     fromRoman V =
@@ -82,7 +85,7 @@ instance Read RomanSymbol where
     readsPrec _ (a : []) =
       case toUpper a of
         'N' ->
-            [(Nulla, [])]
+            [(N, [])]
         'I' ->
             [(I,     [])]
         'V' ->
@@ -101,8 +104,8 @@ instance Read RomanSymbol where
             error "Data.Roman: Parse Error"
     readsPrec _ (x:xs) =
       case fmap toUpper (x:xs) of
-        "NULLA" ->
-            [(Nulla, [])]
+        "NULLA" ->                      --we still read NULLA correctly as N
+            [(N, [])]
         _   ->
             error "Data.Roman: Parse Error"
     readsPrec _ _ =
@@ -177,7 +180,7 @@ instance Num RomanNumeral where
     signum _ = 1
 
     fromInteger 0 =
-        [Nulla]
+        [N]
     fromInteger r =
         fromInteger' r
       where
@@ -238,7 +241,9 @@ so that "xxi" -> [X, X, I]
 instance {-# OVERLAPPING #-} Read RomanNumeral where
     readsPrec _ a
         | fmap toUpper a == "NULLA" =
-            [([Nulla], [])]
+            [([N], [])]
+        | fmap toUpper a == "N" =
+            [([N], [])]
         | otherwise =
             [(parseRoman a, [])]
       where
