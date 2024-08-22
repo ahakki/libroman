@@ -24,7 +24,7 @@ There are two data types that implement this type class:
 - `RomanNumeral`: represents the combination of these symbols.
 
 The Data Type `RomanSymbol` is a simple ADT that has the following Constructors:
-`Nulla | I | V | X | L | C | D | M` where `Nulla` represents zero.
+`N | I | V | X | L | C | D | M` where `N` represents zero.
 
 `RomanNumeral` is a type synonym for lists of `RomanSymbol`s ( as in
 `[RomanSymbol]` ). This data type can be used to represent any combination
