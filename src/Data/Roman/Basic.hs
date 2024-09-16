@@ -13,7 +13,7 @@ Portability :  portable
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE InstanceSigs #-}
 
-module Data.Roman.Basic 
+module Data.Roman.Basic
     ( RomanNumeral
     , RomanSymbol
     ) where
@@ -50,7 +50,7 @@ instance Roman RomanSymbol where
     fromRoman Nulla =       --Nulla is depreciated
         0
     fromRoman N =           --Now we use N!
-        0    
+        0
     fromRoman I =
         1
     fromRoman V =
@@ -71,35 +71,23 @@ instance Roman RomanSymbol where
 Read is case insensitive
 -}
 instance Read RomanSymbol where
-    readsPrec _ (a : []) =
-      case toUpper a of
-        'N' ->
-            [(N, [])]
-        'I' ->
-            [(I,     [])]
-        'V' ->
-            [(V,     [])]
-        'X' ->
-            [(X,     [])]
-        'L' ->
-            [(L,     [])]
-        'C' ->
-            [(C,     [])]
-        'D' ->
-            [(D,     [])]
-        'M' ->
-            [(M,     [])]
-        _   ->
-            error "Data.Roman.Basic: Parse Error with RomanSymbol"
-    readsPrec _ (x:xs) =
-      case fmap toUpper (x:xs) of
-        "NULLA" ->                      --we still read NULLA correctly as N
-            [(N, [])]
-        _   ->
-            error "Data.Roman.Basic: Parse Error with RomanSymbol"
-    readsPrec _ _ =
-        error "Data.Roman.Basic: Parse Error with RomanSymbol"
-
+    readsPrec :: Int -> ReadS RomanSymbol
+    readsPrec _ ('N':'U':'L':'L':'A':_) =  
+        [(N, [])] --we still read NULLA correctly as N
+    readsPrec _ (token:rest) =
+      case toUpper token of
+        'N' -> [(N, rest)]
+        'I' -> [(I, rest)]
+        'V' -> [(V, rest)]
+        'X' -> [(X, rest)]
+        'L' -> [(L, rest)]
+        'C' -> [(C, rest)]
+        'D' -> [(D, rest)]
+        'M' -> [(M, rest)]
+        _   -> [(N, rest), (I, rest), (V, rest),(X, rest),(L, rest),(C, rest),(D, rest),(M, rest)]
+    readsPrec _ rest = 
+        [(N, rest), (I, rest), (V, rest),(X, rest),(L, rest),(C, rest),(D, rest),(M, rest)]
+        
 {- |
 Roman Numerals are represented as Lists of RomanSymbols
 -}

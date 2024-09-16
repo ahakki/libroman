@@ -39,6 +39,7 @@ instance Roman ExtendedRoman where
     fromRoman (Neg, x) = negate $ fromRoman x
 
 instance Enum ExtendedRoman where
+    fromEnum :: ExtendedRoman -> Int
     fromEnum (Pos, x) = fromEnum x
     fromEnum (Neg, x) = fromEnum $ negate x
 
@@ -82,6 +83,7 @@ instance {-# OVERLAPPING #-} Ord ExtendedRoman where
 
 
 instance Real ExtendedRoman where
+    toRational :: ExtendedRoman -> Rational
     toRational (Pos, x) = toRational x
     toRational (Neg, x) = toRational $ negate x
 
@@ -89,6 +91,9 @@ instance Integral ExtendedRoman where
 
 
 instance {-# OVERLAPPING #-} Read ExtendedRoman where
+    readsPrec :: Int -> ReadS ExtendedRoman
+    readsPrec _ [c] =
+        [((Pos, read [c] ::RomanNumeral), [])]
     readsPrec _ s 
         | head s == '-' =
             [((Neg, (tail . read) s :: RomanNumeral), [])]
