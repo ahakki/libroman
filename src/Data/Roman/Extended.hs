@@ -72,8 +72,8 @@ instance Num ExtendedRoman where
 
     fromInteger :: Integer -> ExtendedRoman
     fromInteger i
-        | abs i > 0 = (Pos, fromIntegral (abs i) ::RomanNumeral)
-        | abs i < 0 = (Neg, fromIntegral (abs i) ::RomanNumeral)
+        | signum i > 0 = (Pos, fromIntegral (abs i) ::RomanNumeral)
+        | signum i < 0 = (Neg, fromIntegral (abs i) ::RomanNumeral)
         | otherwise = (Pos, fromIntegral (0::Int) ::RomanNumeral)
 
 
@@ -86,3 +86,19 @@ instance Real ExtendedRoman where
     toRational (Neg, x) = toRational $ negate x
 
 instance Integral ExtendedRoman where
+
+
+instance {-# OVERLAPPING #-} Read ExtendedRoman where
+    readsPrec _ s 
+        | head s == '-' =
+            [((Neg, (tail . read) s :: RomanNumeral), [])]
+        | otherwise =
+
+            [((Pos, read s :: RomanNumeral), [])]
+
+instance {-# OVERLAPPING #-} Show ExtendedRoman where
+    show :: ExtendedRoman -> String
+    show (Neg,num) =
+        "MALUS " ++ show num
+    show (Pos, num) = 
+        show num

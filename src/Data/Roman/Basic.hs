@@ -22,7 +22,6 @@ import Data.Roman.Types
 
 import Data.Char ( toUpper )
 import Data.List.Split ( condense, dropBlanks, oneOf, split )
-import Control.Exception ( throw, ArithException(Underflow) )
 
 -- Roman Symbols
 {- |
@@ -91,15 +90,15 @@ instance Read RomanSymbol where
         'M' ->
             [(M,     [])]
         _   ->
-            error "Data.Roman: Parse Error"
+            error "Data.Roman.Basic: Parse Error with RomanSymbol"
     readsPrec _ (x:xs) =
       case fmap toUpper (x:xs) of
         "NULLA" ->                      --we still read NULLA correctly as N
             [(N, [])]
         _   ->
-            error "Data.Roman: Parse Error"
+            error "Data.Roman.Basic: Parse Error with RomanSymbol"
     readsPrec _ _ =
-        error "Data.Roman: Parse Error"
+        error "Data.Roman.Basic: Parse Error with RomanSymbol"
 
 {- |
 Roman Numerals are represented as Lists of RomanSymbols

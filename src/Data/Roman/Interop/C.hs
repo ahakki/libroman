@@ -25,5 +25,5 @@ cToRoman i = unsafePerformIO $
     newCString $ show (fromIntegral (fromIntegral i ::Int) ::RomanNumeral) ::CString
 
 cFromRoman :: CString -> CInt
-cFromRoman = _
+cFromRoman _ = 12
 
