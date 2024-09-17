@@ -1,4 +1,4 @@
-module Data.Roman.Types where
+module Data.Type.Roman where
 
 
 

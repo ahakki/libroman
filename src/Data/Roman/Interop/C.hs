@@ -12,9 +12,9 @@ Portability :  portable
 {-# LANGUAGE ForeignFunctionInterface #-}
 module Data.Roman.Interop.C where
     
-import Data.Roman.Basic
+import Data.Roman 
 
-import Foreign.C
+import Foreign.C ( newCString, CInt(..), CString )
 import GHC.IO (unsafePerformIO)
 
 foreign export ccall cToRoman :: CInt -> CString

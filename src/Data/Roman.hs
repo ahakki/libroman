@@ -17,6 +17,6 @@ module Data.Roman
     , ExtendedRoman
     ) where
 
-import Data.Roman.Types
+import Data.Type.Roman
 import Data.Roman.Basic
 import Data.Roman.Extended

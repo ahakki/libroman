@@ -18,7 +18,7 @@ module Data.Roman.Basic
     , RomanSymbol
     ) where
 
-import Data.Roman.Types
+import Data.Type.Roman
 
 import Data.Char ( toUpper )
 import Data.List.Split ( condense, dropBlanks, oneOf, split )
@@ -139,13 +139,14 @@ instance Roman RomanNumeral where
 Be aware that, Basic Roman Numerals can never be negative.
 -}
 instance Num RomanNumeral where
+    (+) :: RomanNumeral -> RomanNumeral -> RomanNumeral
     (+) a b =
         fromInteger $ fromRoman a + fromRoman b
 
+    (-) :: RomanNumeral -> RomanNumeral -> RomanNumeral
     (-) a b
         | a >= b =
             fromInteger $ fromRoman a - fromRoman b
-
         | otherwise =
             negate $ fromInteger $ fromRoman a - fromRoman b
 
@@ -153,10 +154,14 @@ instance Num RomanNumeral where
     (*) a b =
         fromInteger $ fromRoman a * fromRoman b
 
+    negate :: RomanNumeral -> RomanNumeral
     negate = id
+    abs :: RomanNumeral -> RomanNumeral
     abs = id
+    signum :: RomanNumeral -> RomanNumeral
     signum _ = 1
 
+    fromInteger :: Integer -> RomanNumeral
     fromInteger 0 =
         [N]
     fromInteger r =
@@ -217,6 +222,7 @@ Overlaps instance Read [a] with a specific version,
 so that "xxi" -> [X, X, I]
 -}
 instance {-# OVERLAPPING #-} Read RomanNumeral where
+    readsPrec :: Int -> ReadS RomanNumeral
     readsPrec _ a
         | fmap toUpper a == "NULLA" =
             [([N], [])]
@@ -232,23 +238,28 @@ instance {-# OVERLAPPING #-} Read RomanNumeral where
             []
 
 instance {-# OVERLAPPING #-} Show RomanNumeral where
+    show :: RomanNumeral -> String
     show (x:xs) =
             show x ++ show xs
     show [] =
          []
 
 instance {-# OVERLAPPING #-} Ord RomanNumeral where
+    compare :: RomanNumeral -> RomanNumeral -> Ordering
     compare x y=
         compare (toInteger x) (toInteger y)
 
+    (<=) :: RomanNumeral -> RomanNumeral -> Bool
     (<=) x y=
         (<=) (toInteger x) (toInteger y)
 
 instance Real RomanNumeral where
+    toRational :: RomanNumeral -> Rational
     toRational a =
         toRational (fromRoman a :: Integer)
 
 instance Integral RomanNumeral where
+    quotRem :: RomanNumeral -> RomanNumeral -> (RomanNumeral, RomanNumeral)
     quotRem x y =
         tupleConv $ quotRem (fromRoman x :: Integer) (fromRoman y :: Integer)
           where
@@ -256,12 +267,15 @@ instance Integral RomanNumeral where
             tupleConv (m, n) =
                 (fromIntegral m, fromIntegral n)
 
+    toInteger :: RomanNumeral -> Integer
     toInteger =
         fromRoman
 
 instance Enum RomanNumeral where
+    toEnum :: Int -> RomanNumeral
     toEnum =
         fromIntegral
 
+    fromEnum :: RomanNumeral -> Int
     fromEnum =
         fromIntegral

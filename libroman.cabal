@@ -23,9 +23,10 @@ executable roman
 library
   hs-source-dirs:      src
   exposed-modules:     Data.Roman
-                     , Data.Roman.Types
+                     , Data.Type.Roman
                      , Data.Roman.Basic
                      , Data.Roman.Extended
+                     , Data.Roman.Interop
                      , Data.Roman.Interop.C
   other-modules:
   ghc-options:         -Wall

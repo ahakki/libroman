@@ -15,7 +15,7 @@ Portability :  portable
 
 module Data.Roman.Extended (ExtendedRoman) where
 
-import Data.Roman.Types ( Roman(..) )
+import Data.Type.Roman ( Roman(..) )
 import Data.Roman.Basic ( RomanNumeral,  RomanSymbol )
 
 data Sign = Neg
