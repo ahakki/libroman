@@ -12,7 +12,7 @@ Portability :  portable
 
 module Data.Roman 
     ( Roman (..)
-    , RomanSymbol
+    , RomanSymbol (..)
     , RomanNumeral
     , ExtendedRoman
     ) where

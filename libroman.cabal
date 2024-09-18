@@ -23,11 +23,11 @@ executable roman
 library
   hs-source-dirs:      src
   exposed-modules:     Data.Roman
-                     , Data.Type.Roman
                      , Data.Roman.Basic
                      , Data.Roman.Extended
                      , Data.Roman.Interop
                      , Data.Roman.Interop.C
+                     , Data.Type.Roman
   other-modules:
   ghc-options:         -Wall
   default-language:    Haskell2010

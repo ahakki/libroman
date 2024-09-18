@@ -1,6 +1,7 @@
 --Spec.hs
 
-import           Data.Roman
+import           Data.Roman (RomanNumeral, RomanSymbol (..))
+import           Data.Type.Roman
 import           Test.Hspec
 import           Test.QuickCheck
 

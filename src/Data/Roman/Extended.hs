@@ -16,7 +16,10 @@ Portability :  portable
 module Data.Roman.Extended (ExtendedRoman) where
 
 import Data.Type.Roman ( Roman(..) )
-import Data.Roman.Basic ( RomanNumeral,  RomanSymbol )
+import Data.Roman.Basic ( RomanNumeral, RomanSymbol(NULLA))
+import Data.Maybe ( fromMaybe )
+import Text.Read ( readMaybe )
+import Data.List.NonEmpty (nonEmpty)
 
 data Sign = Neg
           | Pos
@@ -92,18 +95,20 @@ instance Integral ExtendedRoman where
 
 instance {-# OVERLAPPING #-} Read ExtendedRoman where
     readsPrec :: Int -> ReadS ExtendedRoman
-    readsPrec _ [c] =
-        [((Pos, read [c] ::RomanNumeral), [])]
-    readsPrec _ s 
-        | head s == '-' =
-            [((Neg, (tail . read) s :: RomanNumeral), [])]
-        | otherwise =
-
-            [((Pos, read s :: RomanNumeral), [])]
+    readsPrec _ [] = []
+    readsPrec _ ['-'] = [((Neg, [NULLA]), [])]
+    readsPrec _ ('-':s) =
+        case readMaybe s ::Maybe RomanNumeral of
+            Just i -> [((Neg,  i :: RomanNumeral), [])]
+            Nothing -> [((Neg, [NULLA]), [])]
+    readsPrec _ c =
+        case readMaybe c ::Maybe RomanNumeral of
+            Just i -> [((Pos, i ::  RomanNumeral), [])]
+            Nothing -> []
 
 instance {-# OVERLAPPING #-} Show ExtendedRoman where
     show :: ExtendedRoman -> String
     show (Neg,num) =
         "MALUS " ++ show num
-    show (Pos, num) = 
+    show (Pos, num) =
         show num
