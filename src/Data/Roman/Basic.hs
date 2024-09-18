@@ -226,44 +226,30 @@ so that "xxi" -> [X, X, I]
 instance {-# OVERLAPPING #-} Read RomanNumeral where
     readsPrec :: Int -> ReadS RomanNumeral
     readsPrec _ [] = []
-    readsPrec _ input =
-        if (readsPrec 1 input ::[(RomanSymbol, String)]) == []
-        then []
-        else if (fst . head)(readsPrec 1 input ::[(RomanSymbol, String)]) == NULLA
-        then [(([NULLA]),(drop 5 input))]
-        else part [] input
-      where
-        part:: RomanNumeral -> String -> [(RomanNumeral, String)]
-        part [] [] = []
-        part [] (x:xs) =
-             case (readsPrec 1 (x:xs)) ::[(RomanSymbol, String)] of
-                [] -> error "Data.Roman.Basic: ERROR in Instance Read RomanNumeral"
-                [(N,_)] -> [([N], xs)]
-                [(a,_)] -> part ((read [x] ::RomanSymbol):[]) xs
-        part acc [] =
-            [(reverse acc, [])]
-        part acc xs =
-            case (readsPrec 1  xs ::[(RomanSymbol,String)]) of
-                [] -> [(reverse acc, xs)]
-                [(N,_)]  -> [(reverse acc, xs)]
-                [(NULLA,_)]-> [(reverse acc, xs)]
-                [(num,_)] -> part (num:acc) $ tail xs
-
-parseRoman :: String -> RomanNumeral
-parseRoman (x:xs) =
-    (read [x] :: RomanSymbol) : parseRoman xs 
-parseRoman [] =
+    readsPrec _ input
+        | null (readsPrec 1 input ::[(RomanSymbol, String)]) =
             []
-
-
-
-    -- readsPrec _ a
-    --     | fmap toUpper a == "NULLA" =
-    --         [([NULLA], [])]
-    --     | fmap toUpper a == "N" =
-    --         [([N], [])]
-    --     | otherwise =
-    --         [(parseRoman a, [])]
+        | (fst . head) (readsPrec 1 input ::[(RomanSymbol, String)]) == NULLA =
+            [([NULLA],drop 5 input)]
+        | otherwise =
+            part [] input
+        where
+            part :: RomanNumeral -> String -> [(RomanNumeral, String)]
+            part [] [] = []
+            part [] (x : xs)
+                = case readsPrec 1 (x : xs) :: [(RomanSymbol, String)] of
+                    [] -> error "Data.Roman.Basic: ERROR 1 in Instance Read RomanNumeral"
+                    [(N, _)] -> [([N], xs)]
+                    [(a, _)] -> part [a] xs
+                    _anyelse -> error "Data.Roman.Basic: ERROR 2 in Instance Read RomanNumeral"
+            part acc [] = [(reverse acc, [])]
+            part acc xs
+                = case (readsPrec 1 xs :: [(RomanSymbol, String)]) of
+                    [] -> [(reverse acc, xs)]
+                    [(N, _)] -> [(reverse acc, xs)]
+                    [(NULLA, _)] -> [(reverse acc, xs)]
+                    [(num, _)] -> part (num : acc) $ tail xs
+                    _anyelse -> error "Data.Roman.Basic: ERROR 3 in Instance Read RomanNumeral"
 
 instance {-# OVERLAPPING #-} Show RomanNumeral where
     show :: RomanNumeral -> String
