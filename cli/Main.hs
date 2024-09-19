@@ -38,7 +38,7 @@ main = do
           case (readMaybe y :: Maybe Integer , readMaybe y :: Maybe OutputFormat) of
             (Nothing, Nothing) -> 
               putStrLn ("User input is unreadable!!" ++ show y) >>
-              main
+              ask2 a
             (Nothing, Just b) ->
               print (a + b) >>
               main
