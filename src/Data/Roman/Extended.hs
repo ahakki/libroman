@@ -1,7 +1,5 @@
 -- Data.Roman.Extended.hs
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE InstanceSigs #-}
-
+{- |
 -- |
 -- Module      :  $Header$
 -- Description :  Extended Roman Numerals
@@ -11,22 +9,19 @@
 -- Maintainer  :  ahk@ahakki.xyz
 -- Stability   :  experimental
 -- Portability :  portable
+-}
+
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE InstanceSigs #-}
+
 module Data.Roman.Extended (ExtendedRoman) where
 
-
-import Data.Roman.Basic (RomanNumeral, RomanSymbol (NULLA))
+import Data.Roman.Basic (RomanNumeral, RomanSymbol (..))
 import Data.Type.Roman (Roman (..))
 import Text.Read (readMaybe)
 
-data Sign
-  = Neg
-  | Pos
-  deriving
-    ( Eq,
-      Ord,
-      Show,
-      Enum
-    )
+data Sign = Neg | Pos
+  deriving ( Eq, Ord, Show, Enum)
 
 type ExtendedRoman = (Sign, RomanNumeral)
 
@@ -41,6 +36,8 @@ instance Enum ExtendedRoman where
   fromEnum :: ExtendedRoman -> Int
   fromEnum (Pos, x) = fromEnum x
   fromEnum (Neg, x) = fromEnum $ negate x
+  toEnum :: Int -> ExtendedRoman
+  toEnum = fromIntegral
 
 instance Num ExtendedRoman where
   (+) :: ExtendedRoman -> ExtendedRoman -> ExtendedRoman
@@ -56,19 +53,24 @@ instance Num ExtendedRoman where
     fromInteger $ fromRoman a * fromRoman b
 
   negate :: ExtendedRoman -> ExtendedRoman
-  negate = id
+  negate (Pos, r) = (Neg, r)
+  negate (Neg, r) = (Pos, r)
 
   abs :: ExtendedRoman -> ExtendedRoman
-  abs = id
+  abs (Neg, r) = (Pos, r)
+  abs r = r
 
   signum :: ExtendedRoman -> ExtendedRoman
-  signum (_, x)
-    | (fromIntegral x :: Integer) /= 0 =
-        0
-  signum (Pos, _) =
-    1
-  signum (Neg, _) =
-    -1
+  signum (Pos, x)
+    | (fromIntegral x :: Integer) == 0 =
+        (Pos, [NULLA])
+    | otherwise =
+        1
+  signum (Neg, x)
+    | (fromIntegral x :: Integer) == 0 =
+        (Neg, [NULLA])
+    | otherwise =
+        -1 ::ExtendedRoman
 
   fromInteger :: Integer -> ExtendedRoman
   fromInteger i
@@ -76,7 +78,18 @@ instance Num ExtendedRoman where
     | signum i < 0 = (Neg, fromIntegral (abs i) :: RomanNumeral)
     | otherwise = (Pos, fromIntegral (0 :: Int) :: RomanNumeral)
 
-instance {-# OVERLAPPING #-} Ord ExtendedRoman
+instance {-# OVERLAPPING #-} Ord ExtendedRoman where
+  compare :: ExtendedRoman -> ExtendedRoman -> Ordering
+  compare x y =
+    compare (toInteger x) (toInteger y)
+
+  (<=) :: ExtendedRoman -> ExtendedRoman -> Bool
+  (<=) x y =
+    (<=) (toInteger x) (toInteger y)
+  
+  (>=) :: ExtendedRoman -> ExtendedRoman -> Bool
+  (>=) x y =
+    (>=) (toInteger x) (toInteger y)
 
 
 
@@ -86,11 +99,14 @@ instance Real ExtendedRoman where
   toRational (Neg, x) = toRational $ negate x
 
 instance Integral ExtendedRoman where
-  --quotRem :: ExtendedRoman -> ExtendedRoman -> (ExtendedRoman, ExtendedRoman)
-  --quotRem = _
   toInteger :: ExtendedRoman -> Integer
-  toInteger = fromInteger . fromIntegral
+  toInteger = fromRoman
 
+  quotRem :: ExtendedRoman -> ExtendedRoman -> (ExtendedRoman, ExtendedRoman)
+  quotRem (Pos, r1) (Pos, r2) = ((Pos, quot r1 r2),(Pos, rem r1 r2))
+  quotRem (Pos, r1) (Neg, r2) = ((Neg, quot r1 r2),(Pos, rem r1 r2))
+  quotRem (Neg, r1) (Pos, r2) = ((Neg, quot r1 r2),(Pos, rem r1 r2))
+  quotRem (Neg, r1) (Neg, r2) = ((Pos, quot r1 r2),(Pos, rem r1 r2))
 
 instance {-# OVERLAPPING #-} Read ExtendedRoman where
   readsPrec :: Int -> ReadS ExtendedRoman

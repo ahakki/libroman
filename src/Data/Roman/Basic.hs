@@ -22,7 +22,12 @@ module Data.Roman.Basic
 import Data.Type.Roman
 
 import Data.Char ( toUpper )
-import Data.List.Split ( condense, dropBlanks, oneOf, split )
+import Data.List.Split ( 
+                       condense, 
+                       dropBlanks, 
+                       oneOf, 
+                       split 
+                       )
 
 -- Roman Symbols
 {- |
@@ -109,7 +114,7 @@ instance Roman RomanNumeral where
         | x >= y =
             x : negateSubs (y : ys)
         | x < y =
-            [negate x, y] ++ negateSubs ys
+            negate x : y : negateSubs ys
       negateSubs [x] =
         [x]
       negateSubs _ =
@@ -127,10 +132,7 @@ instance Roman RomanNumeral where
             splitRn' (tail sptr) (head sptr =<< r)
 
       splitters =
-        fmap (split . opts) delims
-
-      opts =
-        dropBlanks . condense
+        fmap (split . dropBlanks . condense) delims 
 
       delims =
         fmap oneOf [[I], [V], [X], [L], [C], [D], [L]]

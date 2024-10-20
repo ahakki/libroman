@@ -1,9 +1,16 @@
-{-# LANGUAGE AllowAmbiguousTypes #-}
+-- Roman.hs
+{- |
+Module      :  $Header$
+Description :  Roman Numerals
+Copyright   :  (c) Alexander Hakki
+License     :  BSD3
+
+Maintainer  :  ahk@ahakki.xyz
+Stability   :  experimental
+Portability :  portable
+-}
+
 module Data.Type.Roman where
-
-
-
-
 
 -- Type class Roman
 {- |
